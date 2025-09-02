@@ -13,6 +13,9 @@ This tool is designed with a **clean, user-friendly interface** to make GPA calc
 - ✅ Lightweight and fast
 
 ---
+## 📸 Screenshots
+
+![GPA Calculator](GPA_Cal_BetterUI/assets/Screenshot.png) 
 
 ## 🔮 Future Plans
 We’re just getting started! Here’s what’s coming soon:  
