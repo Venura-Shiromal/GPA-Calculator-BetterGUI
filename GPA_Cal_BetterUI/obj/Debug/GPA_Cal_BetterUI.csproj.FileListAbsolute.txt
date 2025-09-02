@@ -1,0 +1,16 @@
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\bin\Debug\GPA_Cal_BetterUI.exe.config
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\bin\Debug\GPA_Cal_BetterUI.exe
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\bin\Debug\GPA_Cal_BetterUI.pdb
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI.csproj.AssemblyReference.cache
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\MainWindow.g.cs
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\App.g.cs
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI_MarkupCompile.cache
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI_MarkupCompile.lref
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\MainWindow.baml
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI.g.resources
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI.Properties.Resources.resources
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI.csproj.GenerateResource.cache
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI.csproj.CoreCompileInputs.cache
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI.exe
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI.pdb
+C:\Users\MSI\source\repos\GPA_Cal_BetterUI\GPA_Cal_BetterUI\obj\Debug\GPA_Cal_BetterUI.exe.config
