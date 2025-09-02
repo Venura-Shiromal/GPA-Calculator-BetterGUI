@@ -12,12 +12,13 @@ This tool is designed with a **clean, user-friendly interface** to make GPA calc
 - ✅ Currently supports **MPR Student modules** (common intake)
 - ✅ Lightweight and fast
 
----
 ## 📸 Screenshots
 
 <p align="center">
   <img src="GPA_Cal_BetterUI/assets/Screenshot.png" alt="GPA Calculator" width="300"/>
 </p>
+
+---
 
 ## 🔮 Future Plans
 We’re just getting started! Here’s what’s coming soon:  
