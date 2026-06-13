@@ -1,25 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace GPA_Cal_BetterUI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -30,9 +15,7 @@ namespace GPA_Cal_BetterUI
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
-            {
                 this.DragMove();
-            }
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
@@ -40,168 +23,116 @@ namespace GPA_Cal_BetterUI
             this.Close();
         }
 
-        private static double Grade_to_GradePoint(int Grade)
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((Grade == 0) | (Grade == 1))
+            if (Semester1Panel == null || Semester2Panel == null) return;
+
+            bool isSemester1 = (sender as TabControl).SelectedIndex == 0;
+            Semester1Panel.Visibility = isSemester1 ? Visibility.Visible : Visibility.Collapsed;
+            Semester2Panel.Visibility = isSemester1 ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void Department_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Department.SelectedItem is ComboBoxItem selectedDept)
             {
-                return 4.00;
-            }
-            else if (Grade == 2)
-            {
-                return 3.70;
-            }
-            else if (Grade == 3)
-            {
-                return 3.30;
-            }
-            else if (Grade == 4)
-            {
-                return 3.00;
-            }
-            else if (Grade == 5)
-            {
-                return 2.70;
-            }
-            else if (Grade == 6)
-            {
-                return 2.30;
-            }
-            else if (Grade == 7)
-            {
-                return 2.00;
-            }
-            else if (Grade == 8)
-            {
-                return 1.70;
-            }
-            else if (Grade == 9)
-            {
-                return 1.00;
-            }
-            else
-            {
-                return 0.00;
+                string dept = selectedDept.Content.ToString();
+
+                switch (dept)
+                {
+                    case "Electrical":
+                        Label1_S2.Content = "Mathematics";
+                        Label2_S2.Content = "Programming";
+                        Label3_S2.Content = "Electrical";
+                        Label4_S2.Content = "Material";
+                        Label5_S2.Content = "Fluid";
+                        Label6_S2.Content = "Mechanics";
+                        break;
+                    case "In Development...":
+                        Label1_S2.Content = "In Development...";
+                        Label2_S2.Content = "In Development...";
+                        Label3_S2.Content = "In Development...";
+                        Label4_S2.Content = "In Development...";
+                        Label5_S2.Content = "In Development...";
+                        Label6_S2.Content = "In Development...";
+                        break;
+                    default:
+                        Label1_S2.Content = "Mathematics";
+                        Label2_S2.Content = "Programming";
+                        Label3_S2.Content = "Electrical";
+                        Label4_S2.Content = "Material";
+                        Label5_S2.Content = "Fluid";
+                        Label6_S2.Content = "Mechanics";
+                        break;
+                }
             }
         }
 
-        private static int Credit_Sum(double Maths, double CS, double Elec, double Mech, double Fluid, double Mat)
+        private static double GradeToGradePoint(int selectedIndex)
         {
-            int Sum = 0;
-            int Maths_CP = 3, CS_CP = 3, Elec_CP = 2, Mech_CP = 2, Fluid_CP = 2, Mat_CP = 2;
-
-            if (Maths != 0)
+            switch (selectedIndex)
             {
-                Sum += Maths_CP;
+                case 0: return 4.00;  // A+
+                case 1: return 4.00;  // A
+                case 2: return 3.70;  // A-
+                case 3: return 3.30;  // B+
+                case 4: return 3.00;  // B
+                case 5: return 2.70;  // B-
+                case 6: return 2.30;  // C+
+                case 7: return 2.00;  // C
+                case 8: return 1.70;  // C-
+                case 9: return 1.00;  // D
+                case 10: return 0.00; // F
+                default: return 0.00;
             }
-
-            if (CS != 0)
-            {
-                Sum += CS_CP;
-            }
-
-            if (Elec != 0)
-            {
-                Sum += Elec_CP;
-            }
-
-            if (Mech != 0)
-            {
-                Sum += Mech_CP;
-            }
-
-            if (Fluid != 0)
-            {
-                Sum += Fluid_CP;
-            }
-
-            if (Mat != 0)
-            {
-                Sum += Mat_CP;
-            }
-
-            return Sum;
         }
 
-        private static double GPA_Calculator(double Maths, double CS, double Elec, double Mech, double Fluid, double Mat)
+        private static int CreditSum(double maths, double cs, double elec, double mech, double fluid, double mat)
         {
-            // Credit Points for each module
-            int Maths_CP = 3, CS_CP = 3, Elec_CP = 2, Mech_CP = 2, Fluid_CP = 2, Mat_CP = 2;
+            int mathsCP = 3, csCP = 3, elecCP = 2, mechCP = 2, fluidCP = 2, matCP = 2;
+            int total = 0;
+            if (maths != 0) total += mathsCP;
+            if (cs != 0) total += csCP;
+            if (elec != 0) total += elecCP;
+            if (mech != 0) total += mechCP;
+            if (fluid != 0) total += fluidCP;
+            if (mat != 0) total += matCP;
+            return total;
+        }
 
-            double Sum = Maths * Maths_CP + CS * CS_CP + Elec * Elec_CP + Mech * Mech_CP + Fluid * Fluid_CP + Mat * Mat_CP;
-
-            int Total_CP = Credit_Sum(Maths, CS, Elec, Mech, Fluid, Mat);
-
-            double GPA = Sum / Total_CP;
-
-            return GPA;
+        private static double GpaCalculator(double maths, double cs, double elec, double mech, double fluid, double mat)
+        {
+            int mathsCP = 3, csCP = 3, elecCP = 2, mechCP = 2, fluidCP = 2, matCP = 2;
+            double sum = maths * mathsCP + cs * csCP + elec * elecCP + mech * mechCP + fluid * fluidCP + mat * matCP;
+            int totalCp = CreditSum(maths, cs, elec, mech, fluid, mat);
+            return totalCp > 0 ? sum / totalCp : 0.0;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Extracting all the Grade Points from Grades
+            double maths, cs, elec, mech, fluid, mat;
 
-            double Maths, CS, Elec, Mech, Fluid, Mat;
-
-            if (Grade_Maths.SelectedIndex != -1)
+            if (Semester1Panel.Visibility == Visibility.Visible)
             {
-                Maths = Grade_to_GradePoint(Grade_Maths.SelectedIndex);
+                maths = GradeToGradePoint(Grade_Maths.SelectedIndex);
+                cs = GradeToGradePoint(Grade_CS.SelectedIndex);
+                elec = GradeToGradePoint(Grade_Elec.SelectedIndex);
+                mech = GradeToGradePoint(Grade_Mech.SelectedIndex);
+                fluid = GradeToGradePoint(Grade_Fluid.SelectedIndex);
+                mat = GradeToGradePoint(Grade_Mat.SelectedIndex);
             }
             else
             {
-                Maths = 0;
+                maths = GradeToGradePoint(Grade_Maths_S2.SelectedIndex);
+                cs = GradeToGradePoint(Grade_CS_S2.SelectedIndex);
+                elec = GradeToGradePoint(Grade_Elec_S2.SelectedIndex);
+                mech = GradeToGradePoint(Grade_Mech_S2.SelectedIndex);
+                fluid = GradeToGradePoint(Grade_Fluid_S2.SelectedIndex);
+                mat = GradeToGradePoint(Grade_Mat_S2.SelectedIndex);
             }
 
-            if (Grade_CS.SelectedIndex != -1)
-            {
-                CS = Grade_to_GradePoint(Grade_CS.SelectedIndex);
-            }
-            else
-            {
-                CS = 0;
-            }
-
-            if (Grade_Elec.SelectedIndex != -1)
-            {
-                Elec = Grade_to_GradePoint(Grade_Elec.SelectedIndex);
-            }
-            else
-            {
-                Elec = 0;
-            }
-
-            if (Grade_Mech.SelectedIndex != -1)
-            {
-                Mech = Grade_to_GradePoint(Grade_Mech.SelectedIndex);
-            }
-            else
-            {
-                Mech = 0;
-            }
-
-            if (Grade_Fluid.SelectedIndex != -1)
-            {
-                Fluid = Grade_to_GradePoint(Grade_Fluid.SelectedIndex);
-            }
-            else
-            {
-                Fluid = 0;
-            }
-
-            if (Grade_Mat.SelectedIndex != -1)
-            {
-                Mat = Grade_to_GradePoint(Grade_Mat.SelectedIndex);
-            }
-            else
-            {
-                Mat = 0;
-            }
-
-            //Calculating GPA
-            string GPA = GPA_Calculator(Maths, CS, Elec, Mech, Fluid, Mat).ToString("F2");
-
-            Result.Content = "GPA = " + GPA;
-
-            return;
+            double gpa = GpaCalculator(maths, cs, elec, mech, fluid, mat);
+            Result.Content = "GPA = " + gpa.ToString("F2");
         }
     }
 }
