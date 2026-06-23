@@ -9,19 +9,19 @@ This tool is designed with a **clean, user-friendly interface** to make GPA calc
 
 ## ✨ Features
 - ✅ Modern, easy-to-use **C# based GUI**
-- ✅ Currently supports **MPR Student modules** (common intake)
+- ✅ Currently supports **MPR Student modules** (common intake) and **Electrical Engineering Semester 2**
 - ✅ Lightweight and fast
 
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="GPA_Cal_BetterUI/assets/Screenshot.png" alt="GPA Calculator" width="300"/>
+  <img src="GPA_Cal_BetterUI/assets/preview.jpg" alt="GPA Calculator" width="400"/>
 </p>
 
 ---
 
 ## 🔮 Future Plans
-We’re just getting started! Here’s what’s coming soon:  
+We only got started! Here’s what’s coming up in the future:  
 - 📌 Support for more faculties and modules
 - 📌 Advanced GPA analytics and insights
 - 📌 Exporting GPA reports
@@ -29,10 +29,10 @@ We’re just getting started! Here’s what’s coming soon:
 ---
 
 ## 📢 Stay Updated
-New features and updates will be added regularly. ⭐ Star this repo to stay tuned!
+New features and updates will be added. ⭐ Star this repo to stay tuned!
 
 ---
 
 ## 🙏 Acknowledgements
-Made for students, by students.  
+Made for students, by a student.  
 Thank you for checking this out! ❤️
