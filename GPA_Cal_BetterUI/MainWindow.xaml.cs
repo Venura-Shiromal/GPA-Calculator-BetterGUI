@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,6 +11,7 @@ namespace GPA_Cal_BetterUI
         public MainWindow()
         {
             InitializeComponent();
+            UpdateSemester2Labels("In Development...");
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -25,11 +27,13 @@ namespace GPA_Cal_BetterUI
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
             if (Semester1Panel == null || Semester2Panel == null) return;
 
             bool isSemester1 = (sender as TabControl).SelectedIndex == 0;
             Semester1Panel.Visibility = isSemester1 ? Visibility.Visible : Visibility.Collapsed;
             Semester2Panel.Visibility = isSemester1 ? Visibility.Collapsed : Visibility.Visible;
+
         }
 
         private void Department_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -37,34 +41,41 @@ namespace GPA_Cal_BetterUI
             if (Department.SelectedItem is ComboBoxItem selectedDept)
             {
                 string dept = selectedDept.Content.ToString();
+                UpdateSemester2Labels(dept);
+            }
+        }
 
-                switch (dept)
-                {
-                    case "Electrical":
-                        Label1_S2.Content = "Mathematics";
-                        Label2_S2.Content = "Programming";
-                        Label3_S2.Content = "Electrical";
-                        Label4_S2.Content = "Material";
-                        Label5_S2.Content = "Fluid";
-                        Label6_S2.Content = "Mechanics";
-                        break;
-                    case "In Development...":
-                        Label1_S2.Content = "In Development...";
-                        Label2_S2.Content = "In Development...";
-                        Label3_S2.Content = "In Development...";
-                        Label4_S2.Content = "In Development...";
-                        Label5_S2.Content = "In Development...";
-                        Label6_S2.Content = "In Development...";
-                        break;
-                    default:
-                        Label1_S2.Content = "Mathematics";
-                        Label2_S2.Content = "Programming";
-                        Label3_S2.Content = "Electrical";
-                        Label4_S2.Content = "Material";
-                        Label5_S2.Content = "Fluid";
-                        Label6_S2.Content = "Mechanics";
-                        break;
-                }
+        private void UpdateSemester2Labels(string department)
+        {
+            switch (department)
+            {
+                case "Electrical":
+                    Label1_S2.Content = "Methods of Mathematics";
+                    Label2_S2.Content = "Computer Systems";
+                    Label3_S2.Content = "Theory of Electricity";
+                    Label4_S2.Content = "Basic Electronics";
+                    Label5_S2.Content = "Manufacturing Processes";
+                    Label6_S2.Content = "Communication Skills";
+                    Label7_S2.Content = "Language Skills";
+                    break;
+                case "In Development...":
+                    Label1_S2.Content = "Course 1";
+                    Label2_S2.Content = "Course 2";
+                    Label3_S2.Content = "Course 3";
+                    Label4_S2.Content = "Course 4";
+                    Label5_S2.Content = "Course 5";
+                    Label6_S2.Content = "Course 6";
+                    Label7_S2.Content = "Course 7";
+                    break;
+                default:
+                    Label1_S2.Content = "Course 1";
+                    Label2_S2.Content = "Course 2";
+                    Label3_S2.Content = "Course 3";
+                    Label4_S2.Content = "Course 4";
+                    Label5_S2.Content = "Course 5";
+                    Label6_S2.Content = "Course 6";
+                    Label7_S2.Content = "Course 7";
+                    break;
             }
         }
 
@@ -87,51 +98,57 @@ namespace GPA_Cal_BetterUI
             }
         }
 
-        private static int CreditSum(double maths, double cs, double elec, double mech, double fluid, double mat)
+        private static double GpaCalculator(double[] grades, int[] credits)
         {
-            int mathsCP = 3, csCP = 3, elecCP = 2, mechCP = 2, fluidCP = 2, matCP = 2;
-            int total = 0;
-            if (maths != 0) total += mathsCP;
-            if (cs != 0) total += csCP;
-            if (elec != 0) total += elecCP;
-            if (mech != 0) total += mechCP;
-            if (fluid != 0) total += fluidCP;
-            if (mat != 0) total += matCP;
-            return total;
+            double sum = 0;
+            for (int i = 0; i < grades.Length; i++)
+                sum += grades[i] * credits[i];
+            int totalCredits = credits.Sum();
+            return totalCredits > 0 ? sum / totalCredits : 0.0;
         }
 
-        private static double GpaCalculator(double maths, double cs, double elec, double mech, double fluid, double mat)
+        private int[] SemesterCredit()
         {
-            int mathsCP = 3, csCP = 3, elecCP = 2, mechCP = 2, fluidCP = 2, matCP = 2;
-            double sum = maths * mathsCP + cs * csCP + elec * elecCP + mech * mechCP + fluid * fluidCP + mat * matCP;
-            int totalCp = CreditSum(maths, cs, elec, mech, fluid, mat);
-            return totalCp > 0 ? sum / totalCp : 0.0;
+            int[] credits = null;
+
+            if (Semester1Panel.Visibility == Visibility.Visible)
+            {
+                credits = new int[] { 3, 3, 2, 2, 2, 2 };
+            }
+            else
+            {
+                credits = new int[] { 3, 3, 3, 3, 3, 2, 2 };
+            }
+
+            return credits;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            double maths, cs, elec, mech, fluid, mat;
+            int[] credits = SemesterCredit();
+            double[] grades = new double[credits.Length];
 
             if (Semester1Panel.Visibility == Visibility.Visible)
             {
-                maths = GradeToGradePoint(Grade_Maths.SelectedIndex);
-                cs = GradeToGradePoint(Grade_CS.SelectedIndex);
-                elec = GradeToGradePoint(Grade_Elec.SelectedIndex);
-                mech = GradeToGradePoint(Grade_Mech.SelectedIndex);
-                fluid = GradeToGradePoint(Grade_Fluid.SelectedIndex);
-                mat = GradeToGradePoint(Grade_Mat.SelectedIndex);
+                grades[0] = GradeToGradePoint(Grade1_S1.SelectedIndex);
+                grades[1] = GradeToGradePoint(Grade2_S1.SelectedIndex);
+                grades[2] = GradeToGradePoint(Grade3_S1.SelectedIndex);
+                grades[3] = GradeToGradePoint(Grade4_S1.SelectedIndex);
+                grades[4] = GradeToGradePoint(Grade5_S1.SelectedIndex);
+                grades[5] = GradeToGradePoint(Grade6_S1.SelectedIndex);
             }
-            else
+            else 
             {
-                maths = GradeToGradePoint(Grade_Maths_S2.SelectedIndex);
-                cs = GradeToGradePoint(Grade_CS_S2.SelectedIndex);
-                elec = GradeToGradePoint(Grade_Elec_S2.SelectedIndex);
-                mech = GradeToGradePoint(Grade_Mech_S2.SelectedIndex);
-                fluid = GradeToGradePoint(Grade_Fluid_S2.SelectedIndex);
-                mat = GradeToGradePoint(Grade_Mat_S2.SelectedIndex);
+                grades[0] = GradeToGradePoint(Grade1_S2.SelectedIndex);
+                grades[1] = GradeToGradePoint(Grade2_S2.SelectedIndex);
+                grades[2] = GradeToGradePoint(Grade3_S2.SelectedIndex);
+                grades[3] = GradeToGradePoint(Grade4_S2.SelectedIndex);
+                grades[4] = GradeToGradePoint(Grade5_S2.SelectedIndex);
+                grades[5] = GradeToGradePoint(Grade6_S2.SelectedIndex);
+                grades[6] = GradeToGradePoint(Grade7_S2.SelectedIndex);
             }
 
-            double gpa = GpaCalculator(maths, cs, elec, mech, fluid, mat);
+            double gpa = GpaCalculator(grades, credits);
             Result.Content = "GPA = " + gpa.ToString("F2");
         }
     }
