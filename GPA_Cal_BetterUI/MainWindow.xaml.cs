@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,9 +13,123 @@ namespace GPA_Cal_BetterUI
         string department = "Electrical";
         int semester = 1;
 
+        private List<(ComboBox electiveCombo, ComboBox gradeCombo)> electivePairs = new List<(ComboBox, ComboBox)>();
+        private const int MIN_ELECTIVES = 0;
+        private const int MAX_ELECTIVES = 10;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        // Add elective row
+        private void AddElectiveRow()
+        {
+            if (electivePairs.Count >= MAX_ELECTIVES)
+            {
+                return;
+            }
+
+            // Create a horizontal container for the pair
+            StackPanel rowPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Height = 36,
+                Margin = new Thickness(0, 0, 0, 0)
+            };
+
+            // Create elective ComboBox
+            ComboBox electiveCombo = new ComboBox
+            {
+                Style = (Style)FindResource("RoundedComboBox"),
+                Width = 270,
+                Height = 26,
+                SelectedIndex = -1,
+                FontSize = 14,
+                BorderBrush = null,
+                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#FF2C2835"),
+                Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("White"),
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            // Add new electives here (only module name)
+            string[] electives =
+            {
+                "Visual Programming",
+                "Computer Systems",
+                "Introduction to Telecommunications",
+                "Basic Electronics",
+                "Manufacturing Processes",
+                "Entrepreneurship Theory",
+                "Humanities I"
+            };
+
+            foreach (string elective in electives)
+                electiveCombo.Items.Add(elective);
+
+            // Create grade ComboBox
+            ComboBox gradeCombo = new ComboBox
+            {
+                Style = (Style)FindResource("RoundedComboBox"),
+                Width = 58,
+                Height = 26,
+                SelectedIndex = -1,
+                FontSize = 14,
+                BorderBrush = null,
+                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#FF2C2835"),
+                Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("White"),
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new Thickness(54, 0, 0, 0)
+            };
+
+            string[] grades = { "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F" };
+            foreach (string grade in grades)
+                gradeCombo.Items.Add(grade);
+
+            // Add both to the row panel
+            rowPanel.Children.Add(electiveCombo);
+            rowPanel.Children.Add(gradeCombo);
+
+            // Add row to container
+            ElectiveRowsContainer.Children.Add(rowPanel);
+            electivePairs.Add((electiveCombo, gradeCombo));
+
+            // Scroll to bottom after adding new row
+            if (ElectiveScrollViewer != null)
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    ElectiveScrollViewer.ScrollToEnd();
+                }), System.Windows.Threading.DispatcherPriority.Loaded);
+            }
+        }
+
+        // Remove last elective row
+        private void RemoveElectiveRow()
+        {
+            if (electivePairs.Count <= MIN_ELECTIVES)
+            {
+                return;
+            }
+
+            var lastPair = electivePairs.Last();
+            var rowToRemove = ElectiveRowsContainer.Children[ElectiveRowsContainer.Children.Count - 1] as StackPanel;
+            ElectiveRowsContainer.Children.Remove(rowToRemove);
+            electivePairs.RemoveAt(electivePairs.Count - 1);
+        }
+
+        // Add elective button click
+        private void AddElective_Click(object sender, RoutedEventArgs e)
+        {
+            AddElectiveRow();
+        }
+
+        // Remove elective button click
+        private void RemoveElective_Click(object sender, RoutedEventArgs e)
+        {
+            RemoveElectiveRow();
         }
 
         // Dragging mechanism
@@ -33,8 +148,6 @@ namespace GPA_Cal_BetterUI
         // Switching tabs
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if (Semester1Panel == null || Semester2Panel == null) return;
-
             int tabControl = (sender as TabControl).SelectedIndex;
 
             if (tabControl == 0)
@@ -49,7 +162,6 @@ namespace GPA_Cal_BetterUI
                 Semester1Panel.Visibility = Visibility.Collapsed;
                 Semester2Panel.Visibility = Visibility.Visible;
             }
-
         }
 
         // Switching departments
@@ -63,7 +175,7 @@ namespace GPA_Cal_BetterUI
             }
         }
 
-        // Department panel control
+        // Department panel control (for adding new departments)
         private void DepartmentSwitcher(string department)
         {
             switch (department) 
@@ -121,8 +233,8 @@ namespace GPA_Cal_BetterUI
             return totalCredits > 0 ? sum / totalCredits : 0.0;
         }
 
-        // Credits array selector
-        private int[] SemesterCredit()
+        // Credits array selector (for adding new semester or department course credits)
+        private int[] CompulsaryCredit()
         {
             int[] credits = null;
 
@@ -138,54 +250,92 @@ namespace GPA_Cal_BetterUI
                 } 
                 else if (department == "Computer Science")
                 {
-                    credits = new int[] { 3, 3, 3, 3, 2, 2 }; // Just for now
+                    credits = new int[] { 3, 3, 3, 3, 2, 2 };
                 } 
             }
 
             return credits;
         }
 
+        // Add new electives here (only module credits)
+        private int GetElectiveCredit(int electiveIndex)
+        {
+            switch (electiveIndex)
+            {
+                case 0: case 2: case 6:
+                    return 2;  // Visual Programming, Introduction to Telecommunications, Humanities I 
+                case 1: case 3: case 4: case 5:
+                    return 3;  // Computer Systems, Basic Electronics, Manufacturing Processes, Entrepreneurship Theory
+                default: 
+                    return 0;
+            }
+        }
+
+        // Get selected electives with grades and credits
+        private (List<double> grades, List<int> credits) GetSelectedElectives()
+        {
+            var electiveGrades = new List<double>();
+            var electiveCredits = new List<int>();
+
+            foreach (var (electiveCombo, gradeCombo) in electivePairs)
+            {
+                if (electiveCombo.SelectedIndex != -1 && gradeCombo.SelectedIndex != -1)
+                {
+                    electiveGrades.Add(GradeToGradePoint(gradeCombo.SelectedIndex));
+                    electiveCredits.Add(GetElectiveCredit(electiveCombo.SelectedIndex));
+                }
+            }
+
+            return (electiveGrades, electiveCredits);
+        }
+
         // Calculate button clicked
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            int[] credits = SemesterCredit();
-            double[] grades = new double[credits.Length];
+            var credits = new List<int>();
+            var grades = new List<double>();
 
-            // Reading the inputs
+            // Reading the inputs (for adding new departments and semesters)
             if (semester == 1)
             {
-                grades[0] = GradeToGradePoint(Grade1_S1.SelectedIndex);
-                grades[1] = GradeToGradePoint(Grade2_S1.SelectedIndex);
-                grades[2] = GradeToGradePoint(Grade3_S1.SelectedIndex);
-                grades[3] = GradeToGradePoint(Grade4_S1.SelectedIndex);
-                grades[4] = GradeToGradePoint(Grade5_S1.SelectedIndex);
-                grades[5] = GradeToGradePoint(Grade6_S1.SelectedIndex);
+                credits.AddRange(CompulsaryCredit());
+                grades.Add(GradeToGradePoint(Grade1_S1.SelectedIndex));
+                grades.Add(GradeToGradePoint(Grade2_S1.SelectedIndex));
+                grades.Add(GradeToGradePoint(Grade3_S1.SelectedIndex));
+                grades.Add(GradeToGradePoint(Grade4_S1.SelectedIndex));
+                grades.Add(GradeToGradePoint(Grade5_S1.SelectedIndex));
+                grades.Add(GradeToGradePoint(Grade6_S1.SelectedIndex));
             }
-            else 
+            else if (semester == 2)
             {
-                if (semester == 2 && department == "Electrical")
+                if (department == "Electrical")
                 {
-                    grades[0] = GradeToGradePoint(Grade1_S2_EE.SelectedIndex);
-                    grades[1] = GradeToGradePoint(Grade2_S2_EE.SelectedIndex);
-                    grades[2] = GradeToGradePoint(Grade3_S2_EE.SelectedIndex);
-                    grades[3] = GradeToGradePoint(Grade4_S2_EE.SelectedIndex);
-                    grades[4] = GradeToGradePoint(Grade5_S2_EE.SelectedIndex);
-                    grades[5] = GradeToGradePoint(Grade6_S2_EE.SelectedIndex);
-                    grades[6] = GradeToGradePoint(Grade7_S2_EE.SelectedIndex);
+                    credits.AddRange(CompulsaryCredit());
+                    grades.Add(GradeToGradePoint(Grade1_S2_EE.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade2_S2_EE.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade3_S2_EE.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade4_S2_EE.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade5_S2_EE.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade6_S2_EE.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade7_S2_EE.SelectedIndex));
                 }
-                else if (semester == 2 && department == "Computer Science")
+                else if (department == "Computer Science")
                 {
-                    grades[0] = GradeToGradePoint(Grade1_S2_CS.SelectedIndex);
-                    grades[1] = GradeToGradePoint(Grade2_S2_CS.SelectedIndex);
-                    grades[2] = GradeToGradePoint(Grade3_S2_CS.SelectedIndex);
-                    grades[3] = GradeToGradePoint(Grade4_S2_CS.SelectedIndex);
-                    grades[4] = GradeToGradePoint(Grade5_S2_CS.SelectedIndex);
-                    grades[5] = GradeToGradePoint(Grade6_S2_CS.SelectedIndex);
+                    credits.AddRange(CompulsaryCredit());
+                    grades.Add(GradeToGradePoint(Grade1_S2_CS.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade2_S2_CS.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade3_S2_CS.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade4_S2_CS.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade5_S2_CS.SelectedIndex));
+                    grades.Add(GradeToGradePoint(Grade6_S2_CS.SelectedIndex));
                 }
+                var electives = GetSelectedElectives();
+                grades.AddRange(electives.grades);
+                credits.AddRange(electives.credits);
             }
 
-            double gpa = GpaCalculator(grades, credits); // Calculation
-            Result.Content = "GPA = " + gpa.ToString("F2"); // Output
+            double gpa = GpaCalculator(grades.ToArray(), credits.ToArray());
+            Result.Content = "GPA = " + gpa.ToString("F2");
         }
     }
 }

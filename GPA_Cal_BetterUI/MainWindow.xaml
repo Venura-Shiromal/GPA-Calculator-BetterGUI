@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GPA_Cal_BetterUI"
         Title="GPA Calculator" 
-        Height="600" Width="450" 
-        ResizeMode="CanResize"
-        MinHeight="600" MinWidth="450"
+        Height="700" Width="450" 
+        ResizeMode="NoResize"
+        MinHeight="700" MinWidth="450"
         Opacity="0.95"
         FontFamily="Bahnschrift" 
         WindowStyle="None" 
@@ -16,7 +16,7 @@
         Foreground="Transparent">
 
     <Window.Resources>
-    <!-- Styles (Modern stuff with rounded corners and dark theme) -->
+        <!-- Styles (Modern stuff with rounded corners and dark theme) -->
         <Style x:Key="RoundedLabel" TargetType="Label">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#FF302B3C"/>
@@ -181,6 +181,64 @@
             </Setter>
         </Style>
 
+        <Style x:Key="CustomRepeatButton" TargetType="RepeatButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomScrollBar" TargetType="ScrollBar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent" SnapsToDevicePixels="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Track Name="PART_Track" Grid.Row="0" IsDirectionReversed="True">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand" Style="{StaticResource CustomRepeatButton}"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Background="#FF403B55" 
+                                           BorderBrush="Transparent" 
+                                           BorderThickness="0"
+                                           Margin="2,0,2,0">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#FF403B55"
+                                                        CornerRadius="6"
+                                                        BorderBrush="Transparent"
+                                                        BorderThickness="0"
+                                                        Margin="2,0,2,0"
+                                                        SnapsToDevicePixels="True"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand" Style="{StaticResource CustomRepeatButton}"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style TargetType="TabItem">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#FF2C2835"/>
@@ -217,7 +275,6 @@
             </Setter>
         </Style>
 
-        <!-- Tab control -->
         <Style TargetType="TabControl">
             <Setter Property="Template">
                 <Setter.Value>
@@ -234,6 +291,8 @@
         </Style>
     </Window.Resources>
 
+    <!-- UI Design -->
+    
     <Grid Background="Transparent" MouseLeftButtonDown="Window_MouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -249,10 +308,10 @@
         <!-- Main Window -->
         <Border Grid.Row="1" CornerRadius="2,20,20,20" Background="#FF0E0D11" SnapsToDevicePixels="True">
             <Grid>
-                
+
                 <!-- Semester 1 Tab -->
                 <Grid x:Name="Semester1Panel" Visibility="Collapsed">
-                    
+
                     <!-- Labels -->
                     <Border Margin="29,47,131,158">
                         <Grid Margin="0,0,-10,0">
@@ -264,7 +323,7 @@
                             <Label x:Name="Label6_S1" Content="Fluid Mechanics" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
                         </Grid>
                     </Border>
-                    
+
                     <!-- Combo Boxes -->
                     <Border Margin="324,47,10,158">
                         <Grid>
@@ -352,6 +411,9 @@
 
                 <!-- Semester 2 Tab -->
                 <Grid x:Name="Semester2Panel" Visibility="Visible">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
                     <!-- Electrical Department Panel -->
                     <Grid x:Name="Electrical_Panel" Visibility="Visible">
@@ -360,22 +422,22 @@
                         </Grid.RowDefinitions>
 
                         <!-- Labels -->
-                        <Border Margin="29,47,131,158">
-                            <Grid Margin="0,0,-10,0">
-                                <Label x:Name="Label1_S2_EE" Content="Methods of Mathematics" HorizontalAlignment="Left"  Margin="10,29,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label2_S2_EE" Content="Computer Systems" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label3_S2_EE" Content="Theory of Electricity" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label4_S2_EE" Content="Basic Electronics" HorizontalAlignment="Left" Margin="10,167,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label5_S2_EE" Content="Manufactering Processes" HorizontalAlignment="Left" Margin="10,213,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label6_S2_EE" Content="Communication Skills" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label7_S2_EE" Content="Language Skills" HorizontalAlignment="Left" Margin="10,305,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
+                        <Border Margin="29,47,131,0" Height="316" VerticalAlignment="Top">
+                            <Grid>
+                                <Label x:Name="Label1_S2_EE" Content="Methods of Mathematics" HorizontalAlignment="Center"  Margin="0,18,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
+                                <Label x:Name="Label2_S2_EE" Content="Computer Systems" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
+                                <Label x:Name="Label3_S2_EE" Content="Theory of Electricity" HorizontalAlignment="Center" Margin="0,86,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
+                                <Label x:Name="Label4_S2_EE" Content="Basic Electronics" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
+                                <Label x:Name="Label5_S2_EE" Content="Manufactering Processes" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
+                                <Label x:Name="Label6_S2_EE" Content="Communication Skills" HorizontalAlignment="Center" Margin="0,188,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
+                                <Label x:Name="Label7_S2_EE" Content="Language Skills" HorizontalAlignment="Center" Margin="0,222,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
                             </Grid>
                         </Border>
 
                         <!-- Combo Boxes -->
-                        <Border Margin="324,47,10,158">
+                        <Border Margin="324,48,10,0" Height="315" VerticalAlignment="Top">
                             <Grid>
-                                <ComboBox x:Name="Grade1_S2_EE" Style="{StaticResource RoundedComboBox}" Margin="0,30,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" Grid.RowSpan="2" HorizontalAlignment="Center" Width="58">
+                                <ComboBox x:Name="Grade1_S2_EE" Style="{StaticResource RoundedComboBox}" Margin="0,18,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -388,7 +450,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade2_S2_EE" Style="{StaticResource RoundedComboBox}" Margin="0,76,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
+                                <ComboBox x:Name="Grade2_S2_EE" Style="{StaticResource RoundedComboBox}" Margin="0,52,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -401,7 +463,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade3_S2_EE" Style="{StaticResource RoundedComboBox}" Margin="0,122,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
+                                <ComboBox x:Name="Grade3_S2_EE" Style="{StaticResource RoundedComboBox}" Margin="0,86,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -414,7 +476,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade4_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,168,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
+                                <ComboBox x:Name="Grade4_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -427,7 +489,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade5_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,214,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
+                                <ComboBox x:Name="Grade5_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -440,7 +502,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade6_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,257,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
+                                <ComboBox x:Name="Grade6_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,188,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -453,7 +515,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade7_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,303,0,0" Width="58" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" Height="26" VerticalAlignment="Top">
+                                <ComboBox x:Name="Grade7_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,222,0,0" Width="58" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" Height="26" VerticalAlignment="Top">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -479,19 +541,19 @@
                         <!-- Labels -->
                         <Border Margin="29,47,131,158" Grid.RowSpan="2">
                             <Grid Margin="0,0,-10,0">
-                                <Label x:Name="Label1_S2_CS" Content="CS 1" HorizontalAlignment="Left"  Margin="10,29,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label2_S2_CS" Content="CS 2" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label3_S2_CS" Content="CS 3" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label4_S2_CS" Content="CS 4" HorizontalAlignment="Left" Margin="10,167,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label5_S2_CS" Content="CS 5" HorizontalAlignment="Left" Margin="10,213,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label6_S2_CS" Content="CS 6" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
+                                <Label x:Name="Label1_S2_CS" Content="CS 1" HorizontalAlignment="Left"  Margin="10,18,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
+                                <Label x:Name="Label2_S2_CS" Content="CS 2" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
+                                <Label x:Name="Label3_S2_CS" Content="CS 3" HorizontalAlignment="Left" Margin="10,86,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
+                                <Label x:Name="Label4_S2_CS" Content="CS 4" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
+                                <Label x:Name="Label5_S2_CS" Content="CS 5" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
+                                <Label x:Name="Label6_S2_CS" Content="CS 6" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
                             </Grid>
                         </Border>
-                        
+
                         <!-- Combo Boxes -->
                         <Border Margin="324,47,10,158">
                             <Grid>
-                                <ComboBox x:Name="Grade1_S2_CS" Style="{StaticResource RoundedComboBox}" Margin="0,30,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" Grid.RowSpan="2" HorizontalAlignment="Center" Width="58">
+                                <ComboBox x:Name="Grade1_S2_CS" Style="{StaticResource RoundedComboBox}" Margin="0,18,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" Grid.RowSpan="2" HorizontalAlignment="Center" Width="58">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -504,7 +566,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade2_S2_CS" Style="{StaticResource RoundedComboBox}" Margin="0,76,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
+                                <ComboBox x:Name="Grade2_S2_CS" Style="{StaticResource RoundedComboBox}" Margin="0,52,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -517,7 +579,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade3_S2_CS" Style="{StaticResource RoundedComboBox}" Margin="0,122,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
+                                <ComboBox x:Name="Grade3_S2_CS" Style="{StaticResource RoundedComboBox}" Margin="0,86,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -530,7 +592,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade4_S2_CS" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,168,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
+                                <ComboBox x:Name="Grade4_S2_CS" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -543,7 +605,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade5_S2_CS" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,214,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
+                                <ComboBox x:Name="Grade5_S2_CS" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -556,7 +618,7 @@
                                     <ComboBoxItem Content="D"/>
                                     <ComboBoxItem Content="F"/>
                                 </ComboBox>
-                                <ComboBox x:Name="Grade6_S2_CS" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,257,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
+                                <ComboBox x:Name="Grade6_S2_CS" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,188,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
                                     <ComboBoxItem Content="A+"/>
                                     <ComboBoxItem Content="A"/>
                                     <ComboBoxItem Content="A-"/>
@@ -573,7 +635,24 @@
                         </Border>
                     </Grid>
 
-                    <!-- Department Selecter -->
+                    <!-- Dynamic electives section -->
+                    <StackPanel Orientation="Horizontal" Margin="10,370,10,0" Height="33" VerticalAlignment="Top">
+                        <TextBlock Text="Electives" Foreground="White" FontSize="16" VerticalAlignment="Center" Width="100" Margin="15,0,0,0"/>
+                        <Button Style="{DynamicResource ButtonStyle1}" Content="+" Click="AddElective_Click" Width="35" Height="26" Margin="220,0,0,0" FontSize="12"/>
+                        <Button Style="{DynamicResource ButtonStyle1}" Content="−" Click="RemoveElective_Click" Width="35" Height="26" Margin="5,0,0,0" FontSize="12"/>
+                    </StackPanel>
+
+                    <ScrollViewer x:Name="ElectiveScrollViewer" 
+                                  Margin="29,405,24,150" 
+                                  VerticalScrollBarVisibility="Auto" 
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}"/>
+                        </ScrollViewer.Resources>
+                        <StackPanel x:Name="ElectiveRowsContainer" Orientation="Vertical"/>
+                    </ScrollViewer>
+
+                    <!-- Department selecter -->
                     <ComboBox x:Name="Department" 
                               Style="{StaticResource RoundedComboBox}"
                               HorizontalAlignment="Center" 
@@ -591,11 +670,11 @@
                 </Grid>
 
                 <!-- Calculate Button -->
-                <Button Style="{DynamicResource ButtonStyle1}" x:Name="Cal_Button" Content="Calculate" Click="Button_Click" Foreground="White" Background="#FF302B3C" FontSize="16" Margin="0,0,0,103" HorizontalAlignment="Center" Width="148" Height="42" VerticalAlignment="Bottom"/>
-                
+                <Button Style="{DynamicResource ButtonStyle1}" x:Name="Cal_Button" Content="Calculate" Click="Button_Click" Foreground="White" Background="#FF302B3C" FontSize="16" Margin="0,0,0,90" HorizontalAlignment="Center" Width="148" Height="42" VerticalAlignment="Bottom"/>
+
                 <!-- Output Label -->
-                <Label x:Name="Result" Style="{StaticResource RoundedLabel}" Content="" Margin="10,0,10,10" Background="#7F2C2835" Foreground="White" FontSize="18" FontFamily="Bahnschrift SemiBold" Height="71" VerticalAlignment="Bottom"/>
-                
+                <Label x:Name="Result" Style="{StaticResource RoundedLabel}" Content="" Margin="10,0,10,10" Background="#7F2C2835" Foreground="White" FontSize="18" FontFamily="Bahnschrift SemiBold" Height="65" VerticalAlignment="Bottom"/>
+
                 <!-- Exit Button -->
                 <Button Style="{StaticResource ExitButtonStyle}" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Click="ExitButton_Click"/>
             </Grid>
