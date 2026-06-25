@@ -3,14 +3,20 @@
 A **simple and modern GPA Calculator** built for **Engineering Students at the University of Moratuwa, Sri Lanka**.  
 This tool is designed with a **clean, user-friendly interface** to make GPA calculations faster and easier.
 
+- ✅ Modern, easy-to-use **C# based GUI**
+- ✅ Lightweight and fast
+
 🚀 Unlike older versions (now discontinued), this is the **official and actively maintained version** that will continue to receive improvements.
 
 ---
 
 ## ✨ Features
-- ✅ Modern, easy-to-use **C# based GUI**
-- ✅ Currently supports **MPR Student modules** (common intake) and **Electrical Engineering Semester 2**
-- ✅ Lightweight and fast
+- **MPR Student modules** (Semester 1 common intake)
+- **Semester 2** support for a few departments.
+    - Electrical
+    - Computer Science
+    - Mechanical (with all Streams)
+
 
 ## 📸 Screenshots
 
