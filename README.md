@@ -15,7 +15,7 @@ This tool is designed with a **clean, user-friendly interface** to make GPA calc
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="GPA_Cal_BetterUI/assets/preview.jpg" alt="GPA Calculator" width="450"/>
+  <img src="GPA_Cal_BetterUI/assets/preview.jp" alt="GPA Calculator" width="450"/>
 </p>
 
 ---
