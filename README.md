@@ -12,10 +12,11 @@ This tool is designed with a **clean, user-friendly interface** to make GPA calc
 
 ## ✨ Features
 - **MPR Student modules** (Semester 1 common intake)
-- **Semester 2** support for a few departments.
+- **Semester 2** support for _the following departments_.
     - Electrical
     - Computer Science
-    - Mechanical (with all Streams)
+    - Mechanical (with all **Streams**)
+- Electives are also supported
 
 
 ## 📸 Screenshots
