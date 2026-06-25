@@ -11,10 +11,12 @@ namespace GPA_Cal_BetterUI
     {
         // Default global variables
         string department = "Electrical";
+        string stream = "General";
         int semester = 1;
 
+        private List<ComboBox> gradeComboList = new List<ComboBox>();
+        private List<string> moduleList = new List<string>();
         private List<(ComboBox electiveCombo, ComboBox gradeCombo)> electivePairs = new List<(ComboBox, ComboBox)>();
-        private const int MIN_ELECTIVES = 0;
         private const int MAX_ELECTIVES = 10;
 
         public MainWindow()
@@ -22,40 +24,50 @@ namespace GPA_Cal_BetterUI
             InitializeComponent();
         }
 
+        // Dragging mechanism
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                this.DragMove();
+        }
+
+        // Closing mechanism
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         // Add elective row
         private void AddElectiveRow()
         {
-            if (electivePairs.Count >= MAX_ELECTIVES)
+            if (electivePairs.Count < MAX_ELECTIVES)
             {
-                return;
-            }
+                // Create a horizontal container for the pair
+                StackPanel rowPanel = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Height = 36,
+                    Margin = new Thickness(0, 0, 0, 0)
+                };
 
-            // Create a horizontal container for the pair
-            StackPanel rowPanel = new StackPanel
-            {
-                Orientation = Orientation.Horizontal,
-                Height = 36,
-                Margin = new Thickness(0, 0, 0, 0)
-            };
+                // Create elective ComboBox
+                ComboBox electiveCombo = new ComboBox
+                {
+                    Style = (Style)FindResource("RoundedComboBox"),
+                    Width = 270,
+                    Height = 26,
+                    SelectedIndex = -1,
+                    FontSize = 14,
+                    BorderBrush = null,
+                    Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#FF2C2835"),
+                    Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("White"),
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
 
-            // Create elective ComboBox
-            ComboBox electiveCombo = new ComboBox
-            {
-                Style = (Style)FindResource("RoundedComboBox"),
-                Width = 270,
-                Height = 26,
-                SelectedIndex = -1,
-                FontSize = 14,
-                BorderBrush = null,
-                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#FF2C2835"),
-                Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("White"),
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalAlignment = HorizontalAlignment.Left
-            };
-
-            // Add new electives here (only module name)
-            string[] electives =
-            {
+                // Add new electives here (only module name)
+                string[] electives =
+                {
                 "Visual Programming",
                 "Computer Systems",
                 "Introduction to Telecommunications",
@@ -65,10 +77,58 @@ namespace GPA_Cal_BetterUI
                 "Humanities I"
             };
 
-            foreach (string elective in electives)
-                electiveCombo.Items.Add(elective);
+                foreach (string elective in electives)
+                    electiveCombo.Items.Add(elective);
 
-            // Create grade ComboBox
+                // Create grade ComboBox
+                ComboBox gradeCombo = CreateGradeCombo();
+
+                // Add both to the row panel
+                rowPanel.Children.Add(electiveCombo);
+                rowPanel.Children.Add(gradeCombo);
+
+                // Add row to container
+                ElectiveRowsContainer.Children.Add(rowPanel);
+                electivePairs.Add((electiveCombo, gradeCombo));
+
+                // Scroll to bottom after adding new row
+                if (ElectiveScrollViewer != null)
+                {
+                    Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        ElectiveScrollViewer.ScrollToEnd();
+                    }), System.Windows.Threading.DispatcherPriority.Loaded);
+                }
+            }
+        }
+
+        // Remove last elective row
+        private void RemoveElectiveRow()
+        {
+            if (electivePairs.Count > 0)
+            {
+                var lastPair = electivePairs.Last();
+                var rowToRemove = ElectiveRowsContainer.Children[ElectiveRowsContainer.Children.Count - 1] as StackPanel;
+                ElectiveRowsContainer.Children.Remove(rowToRemove);
+                electivePairs.RemoveAt(electivePairs.Count - 1);
+            }
+        }
+
+        // Add elective button click
+        private void AddElective_Click(object sender, RoutedEventArgs e)
+        {
+            AddElectiveRow();
+        }
+
+        // Remove elective button click
+        private void RemoveElective_Click(object sender, RoutedEventArgs e)
+        {
+            RemoveElectiveRow();
+        }
+
+        // Create grade ComboBox
+        private ComboBox CreateGradeCombo()
+        {
             ComboBox gradeCombo = new ComboBox
             {
                 Style = (Style)FindResource("RoundedComboBox"),
@@ -88,79 +148,189 @@ namespace GPA_Cal_BetterUI
             foreach (string grade in grades)
                 gradeCombo.Items.Add(grade);
 
-            // Add both to the row panel
-            rowPanel.Children.Add(electiveCombo);
-            rowPanel.Children.Add(gradeCombo);
+            return gradeCombo;
+        }
 
-            // Add row to container
-            ElectiveRowsContainer.Children.Add(rowPanel);
-            electivePairs.Add((electiveCombo, gradeCombo));
-
-            // Scroll to bottom after adding new row
-            if (ElectiveScrollViewer != null)
+        // Add grade ComboBox
+        private void AddGradeCombo(int h, int b)
+        {
+            Border GradeBorder = new Border
             {
-                Dispatcher.BeginInvoke(new Action(() =>
+                Height = h,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new Thickness(0, b, 0, 0)
+            };
+
+            ComboBox gradeCombo = CreateGradeCombo();
+            gradeCombo.Margin = new Thickness(0, 0, 0, 0);
+
+            gradeComboList.Add(gradeCombo);
+
+            GradeBorder.Child = gradeCombo;
+            Grade_Panel.Children.Add(GradeBorder);
+        }
+
+        // Dynamically updates ComboBoxes
+        private void AddComboBox_Dep(int h, int b)
+        {
+            RemoveGradeCombo();
+            AddGradeCombo(h, b);
+            for (int i = 0; i < moduleList.Count; i++) AddGradeCombo(h, 0);
+        }
+
+        // Remove grading ComboBox
+        private void RemoveGradeCombo()
+        {
+            int N = Grade_Panel.Children.Count;
+
+            for (int i = 0; i < N; i++)
+            {
+                int n = Grade_Panel.Children.Count;
+                var boxToRemove = Grade_Panel.Children[n - 1];
+                Grade_Panel.Children.Remove(boxToRemove);
+            }
+
+            gradeComboList.Clear();
+        }
+
+        // Create module Labels
+        private void CreateModuleLabel(int h, int b, string name)
+        {
+            Border LabelBorder = new Border
+            {
+                Height = h,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new Thickness(0, b, 0, 0)
+            };
+
+            Label module = new Label
+            {
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("White"),
+                FontSize = 14,
+                Width = 280,
+                Height = 29,
+                Margin = new Thickness(10, 0, 0, 0),
+                Content = name
+            };
+
+            LabelBorder.Child = module;
+            Labels_Panel.Children.Add(LabelBorder);
+        }
+
+        // Add module Labels
+        private void AddModuleLabels()
+        {
+            var moduleLabels = new List<string>();
+            string moduleFirst = "";
+            int h = 46; int b = 29;
+
+            if (semester == 1) {
+
+                h = 46; b = 29;
+                moduleFirst = "Mathematics";
+                moduleLabels = new List<string> {
+                    "Programming Fundamentals",
+                    "Electrical Fundamentals",
+                    "Properties of Materials",
+                    "Mechanics",
+                    "Fluid Mechanics"
+                };
+
+            } else if (semester == 2)
+            {
+                h = 34; b = 18;
+                moduleFirst = "Methods of Mathematics";
+
+                if (department == "Electrical")
                 {
-                    ElectiveScrollViewer.ScrollToEnd();
-                }), System.Windows.Threading.DispatcherPriority.Loaded);
-            }
-        }
+                    moduleLabels = new List<string> {
+                    "Theory of Electricity",
+                    "Computer Systems",
+                    "Basic Electronics",
+                    "Manufacturing Processes",
+                    "Communication Skills",
+                    "Language Skills"
+                    };
+                }
+                else if (department == "Computer Science")
+                {
+                    moduleLabels = new List<string> {
+                    "Theory of Electricity",
+                    "Data Structures and Algorithms",
+                    "Program Construction",
+                    "Computer Organization and Digital Design",
+                    "Language Skills"
+                    };
+                }
+                else if (department == "Mechanical")
+                {
+                    moduleLabels = new List<string> {
+                    "Mechanics of Materials I",
+                    "Manufacturing Technology",
+                    "Engineering Graphics and Machine Drawing",
+                    "Fundamentals of Engineering Thermodynamics",
+                    "Fundamentals of Mechatronics",
+                    "Engineering Materials",
+                    "Language Skills"
+                    };
 
-        // Remove last elective row
-        private void RemoveElectiveRow()
-        {
-            if (electivePairs.Count <= MIN_ELECTIVES)
+                    if (stream == "Mechatronic")
+                    {
+                        moduleLabels[moduleLabels.IndexOf("Fundamentals of Mechatronics")] = "Mechatronic Systems Engineering";
+                    }
+                }
+            }
+
+            RemoveModuleLabels();
+            CreateModuleLabel(h, b, moduleFirst);
+            foreach (string module in moduleLabels)
             {
-                return;
+                CreateModuleLabel(h, 0, module);
             }
 
-            var lastPair = electivePairs.Last();
-            var rowToRemove = ElectiveRowsContainer.Children[ElectiveRowsContainer.Children.Count - 1] as StackPanel;
-            ElectiveRowsContainer.Children.Remove(rowToRemove);
-            electivePairs.RemoveAt(electivePairs.Count - 1);
+            moduleList = moduleLabels;
         }
 
-        // Add elective button click
-        private void AddElective_Click(object sender, RoutedEventArgs e)
+        // Remove module Labels
+        private void RemoveModuleLabels()
         {
-            AddElectiveRow();
+            int N = Labels_Panel.Children.Count;
+
+            for (int i = 0; i < N; i++)
+            {
+                int n = Labels_Panel.Children.Count;
+                var boxToRemove = Labels_Panel.Children[n - 1];
+                Labels_Panel.Children.Remove(boxToRemove);
+            }
         }
 
-        // Remove elective button click
-        private void RemoveElective_Click(object sender, RoutedEventArgs e)
-        {
-            RemoveElectiveRow();
-        }
-
-        // Dragging mechanism
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-                this.DragMove();
-        }
-
-        // Closing mechanism
-        private void ExitButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        // Switching tabs
+        // Switching semesters
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int tabControl = (sender as TabControl).SelectedIndex;
+            if (tabControl == 0) semester = 1;
+            if (tabControl == 1) semester = 2;
+            SemSwitcher(semester);
+        }
 
-            if (tabControl == 0)
+        // Add new semesters here
+        private void SemSwitcher(int sem)
+        {
+            Result.Content = "";
+
+            if (sem == 1)
             {
-                semester = 1;
-                Semester1Panel.Visibility = Visibility.Visible;
                 Semester2Panel.Visibility = Visibility.Collapsed;
-            } 
-            else
+                AddModuleLabels();
+                AddComboBox_Dep(46, 29);
+            }
+            else if (sem == 2)
             {
-                semester = 2;
-                Semester1Panel.Visibility = Visibility.Collapsed;
                 Semester2Panel.Visibility = Visibility.Visible;
+                AddModuleLabels();
+                AddComboBox_Dep(34, 18);
             }
         }
 
@@ -175,33 +345,81 @@ namespace GPA_Cal_BetterUI
             }
         }
 
-        // Department panel control (for adding new departments)
+        // Add new departments here
         private void DepartmentSwitcher(string department)
         {
+            AddModuleLabels();
+
             switch (department) 
             {
                 case "Electrical":
-                    Semester1Panel.Visibility = Visibility.Collapsed;
-                    Semester2Panel.Visibility = Visibility.Visible;
-                    Electrical_Panel.Visibility = Visibility.Visible;
-                    CS_Panel.Visibility = Visibility.Collapsed;
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                    AddComboBox_Dep(34, 18);
                     break;
 
                 case "Computer Science":
-                    Semester1Panel.Visibility = Visibility.Collapsed;
-                    Semester2Panel.Visibility = Visibility.Visible;
-                    Electrical_Panel.Visibility = Visibility.Collapsed;
-                    CS_Panel.Visibility = Visibility.Visible;
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                    AddComboBox_Dep(34, 18);
+                    break;
+
+                case "Mechanical":
+                    Mech_Panel.Visibility = Visibility.Visible;
+                    Department.Margin = new Thickness(58, 21, 240, 0);
+                    AddComboBox_Dep(34, 18);
                     break;
 
                 default:
-                    Semester1Panel.Visibility = Visibility.Collapsed;
-                    Semester2Panel.Visibility = Visibility.Visible;
-                    Electrical_Panel.Visibility = Visibility.Visible;
-                    CS_Panel.Visibility = Visibility.Collapsed;
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                    AddComboBox_Dep(34, 18);
                     break;
             }
         }
+
+        // Switching streams
+        private void Mech_Stream_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Mech_Stream.SelectedItem is ComboBoxItem selected_MechStream)
+            {
+                string mechStream = selected_MechStream.Content.ToString();
+                stream = mechStream;
+                AddModuleLabels();
+                AddComboBox_Dep(34, 18);
+            }
+        }
+
+        // Add new streams here
+        /*
+        private void StreamSwitcher(string stream)
+        {
+            if (department == "Mechanical")
+            {
+                switch (stream)
+                {
+                    case "General":
+                        AddComboBox_Dep(34, 18, 6);
+                        break;
+
+                    case "Aeronautical":
+                        AddComboBox_Dep(34, 18, 6);
+                        break;
+
+                    case "Biomechanical":
+                        AddComboBox_Dep(34, 18, 6);
+                        break;
+
+                    case "Mechatronic":
+                        AddComboBox_Dep(34, 18, 6);
+                        break;
+
+                    default:
+                        AddComboBox_Dep(34, 18, 6);
+                        break;
+                }
+            }
+        }*/
 
         // Grade to grade point converter
         private static double GradeToGradePoint(int selectedIndex)
@@ -250,8 +468,12 @@ namespace GPA_Cal_BetterUI
                 } 
                 else if (department == "Computer Science")
                 {
-                    credits = new int[] { 3, 3, 3, 3, 2, 2 };
-                } 
+                    credits = new int[] { 3, 3, 3, 3, 3, 2 };
+                }
+                else if (department == "Mechanical")
+                {
+                    credits = new int[] { 3, 3, 3, 3, 3, 3, 2, 2 };
+                }
             }
 
             return credits;
@@ -289,50 +511,27 @@ namespace GPA_Cal_BetterUI
             return (electiveGrades, electiveCredits);
         }
 
+        // Get grades of compulsary modules
+        private List<double> GetGrades()
+        {
+            var gradesList = new List<double>();
+
+            foreach (var gradeCombo in gradeComboList)
+            {
+                if (gradeCombo.SelectedIndex != -1)
+                {
+                    gradesList.Add(GradeToGradePoint(gradeCombo.SelectedIndex));
+                }
+            }
+
+            return gradesList;
+        }
+
         // Calculate button clicked
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var credits = new List<int>();
-            var grades = new List<double>();
-
-            // Reading the inputs (for adding new departments and semesters)
-            if (semester == 1)
-            {
-                credits.AddRange(CompulsaryCredit());
-                grades.Add(GradeToGradePoint(Grade1_S1.SelectedIndex));
-                grades.Add(GradeToGradePoint(Grade2_S1.SelectedIndex));
-                grades.Add(GradeToGradePoint(Grade3_S1.SelectedIndex));
-                grades.Add(GradeToGradePoint(Grade4_S1.SelectedIndex));
-                grades.Add(GradeToGradePoint(Grade5_S1.SelectedIndex));
-                grades.Add(GradeToGradePoint(Grade6_S1.SelectedIndex));
-            }
-            else if (semester == 2)
-            {
-                if (department == "Electrical")
-                {
-                    credits.AddRange(CompulsaryCredit());
-                    grades.Add(GradeToGradePoint(Grade1_S2_EE.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade2_S2_EE.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade3_S2_EE.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade4_S2_EE.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade5_S2_EE.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade6_S2_EE.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade7_S2_EE.SelectedIndex));
-                }
-                else if (department == "Computer Science")
-                {
-                    credits.AddRange(CompulsaryCredit());
-                    grades.Add(GradeToGradePoint(Grade1_S2_CS.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade2_S2_CS.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade3_S2_CS.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade4_S2_CS.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade5_S2_CS.SelectedIndex));
-                    grades.Add(GradeToGradePoint(Grade6_S2_CS.SelectedIndex));
-                }
-                var electives = GetSelectedElectives();
-                grades.AddRange(electives.grades);
-                credits.AddRange(electives.credits);
-            }
+            var credits = CompulsaryCredit();
+            var grades = GetGrades();
 
             double gpa = GpaCalculator(grades.ToArray(), credits.ToArray());
             Result.Content = "GPA = " + gpa.ToString("F2");

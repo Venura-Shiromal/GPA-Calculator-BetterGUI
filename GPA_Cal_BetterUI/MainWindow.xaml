@@ -333,7 +333,6 @@
     </Window.Resources>
 
     <!-- UI Design -->
-    
     <Grid Background="Transparent" MouseLeftButtonDown="Window_MouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -350,105 +349,15 @@
         <Border Grid.Row="1" CornerRadius="2,20,20,20" Background="#FF0E0D11" SnapsToDevicePixels="True">
             <Grid>
 
-                <!-- Semester 1 Tab -->
-                <Grid x:Name="Semester1Panel" Visibility="Collapsed">
+                <!-- Combo Boxes -->
+                <Border Margin="324,47,10,0" Height="316" VerticalAlignment="Top">
+                    <StackPanel x:Name="Grade_Panel"> </StackPanel>
+                </Border>
 
-                    <!-- Labels -->
-                    <Border Margin="29,47,131,158">
-                        <Grid Margin="0,0,-10,0">
-                            <Label x:Name="Label1_S1" Content="Mathematics" HorizontalAlignment="Left"  Margin="10,29,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                            <Label x:Name="Label2_S1" Content="Programming Fundamentals" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                            <Label x:Name="Label3_S1" Content="Electrical Fundamentals" HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                            <Label x:Name="Label4_S1" Content="Properties of Materials" HorizontalAlignment="Left" Margin="10,167,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                            <Label x:Name="Label5_S1" Content="Mechanics" HorizontalAlignment="Left" Margin="10,213,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                            <Label x:Name="Label6_S1" Content="Fluid Mechanics" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                        </Grid>
-                    </Border>
-
-                    <!-- Combo Boxes -->
-                    <Border Margin="324,47,10,158">
-                        <Grid>
-                            <ComboBox x:Name="Grade1_S1" Style="{StaticResource RoundedComboBox}" Margin="0,30,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" Grid.RowSpan="2" HorizontalAlignment="Center" Width="58">
-                                <ComboBoxItem Content="A+"/>
-                                <ComboBoxItem Content="A"/>
-                                <ComboBoxItem Content="A-"/>
-                                <ComboBoxItem Content="B+"/>
-                                <ComboBoxItem Content="B"/>
-                                <ComboBoxItem Content="B-"/>
-                                <ComboBoxItem Content="C+"/>
-                                <ComboBoxItem Content="C"/>
-                                <ComboBoxItem Content="C-"/>
-                                <ComboBoxItem Content="D"/>
-                                <ComboBoxItem Content="F"/>
-                            </ComboBox>
-                            <ComboBox x:Name="Grade2_S1" Style="{StaticResource RoundedComboBox}" Margin="0,76,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
-                                <ComboBoxItem Content="A+"/>
-                                <ComboBoxItem Content="A"/>
-                                <ComboBoxItem Content="A-"/>
-                                <ComboBoxItem Content="B+"/>
-                                <ComboBoxItem Content="B"/>
-                                <ComboBoxItem Content="B-"/>
-                                <ComboBoxItem Content="C+"/>
-                                <ComboBoxItem Content="C"/>
-                                <ComboBoxItem Content="C-"/>
-                                <ComboBoxItem Content="D"/>
-                                <ComboBoxItem Content="F"/>
-                            </ComboBox>
-                            <ComboBox x:Name="Grade3_S1" Style="{StaticResource RoundedComboBox}" Margin="0,122,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
-                                <ComboBoxItem Content="A+"/>
-                                <ComboBoxItem Content="A"/>
-                                <ComboBoxItem Content="A-"/>
-                                <ComboBoxItem Content="B+"/>
-                                <ComboBoxItem Content="B"/>
-                                <ComboBoxItem Content="B-"/>
-                                <ComboBoxItem Content="C+"/>
-                                <ComboBoxItem Content="C"/>
-                                <ComboBoxItem Content="C-"/>
-                                <ComboBoxItem Content="D"/>
-                                <ComboBoxItem Content="F"/>
-                            </ComboBox>
-                            <ComboBox x:Name="Grade4_S1" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,168,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
-                                <ComboBoxItem Content="A+"/>
-                                <ComboBoxItem Content="A"/>
-                                <ComboBoxItem Content="A-"/>
-                                <ComboBoxItem Content="B+"/>
-                                <ComboBoxItem Content="B"/>
-                                <ComboBoxItem Content="B-"/>
-                                <ComboBoxItem Content="C+"/>
-                                <ComboBoxItem Content="C"/>
-                                <ComboBoxItem Content="C-"/>
-                                <ComboBoxItem Content="D"/>
-                                <ComboBoxItem Content="F"/>
-                            </ComboBox>
-                            <ComboBox x:Name="Grade5_S1" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,214,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
-                                <ComboBoxItem Content="A+"/>
-                                <ComboBoxItem Content="A"/>
-                                <ComboBoxItem Content="A-"/>
-                                <ComboBoxItem Content="B+"/>
-                                <ComboBoxItem Content="B"/>
-                                <ComboBoxItem Content="B-"/>
-                                <ComboBoxItem Content="C+"/>
-                                <ComboBoxItem Content="C"/>
-                                <ComboBoxItem Content="C-"/>
-                                <ComboBoxItem Content="D"/>
-                                <ComboBoxItem Content="F"/>
-                            </ComboBox>
-                            <ComboBox x:Name="Grade6_S1" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,257,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
-                                <ComboBoxItem Content="A+"/>
-                                <ComboBoxItem Content="A"/>
-                                <ComboBoxItem Content="A-"/>
-                                <ComboBoxItem Content="B+"/>
-                                <ComboBoxItem Content="B"/>
-                                <ComboBoxItem Content="B-"/>
-                                <ComboBoxItem Content="C+"/>
-                                <ComboBoxItem Content="C"/>
-                                <ComboBoxItem Content="C-"/>
-                                <ComboBoxItem Content="D"/>
-                                <ComboBoxItem Content="F"/>
-                            </ComboBox>
-                        </Grid>
-                    </Border>
-                </Grid>
+                <!-- Labels -->
+                <Border Margin="10,47,126,0" Height="316" VerticalAlignment="Top">
+                    <StackPanel x:Name="Labels_Panel"></StackPanel>
+                </Border>
 
                 <!-- Semester 2 Tab -->
                 <Grid x:Name="Semester2Panel" Visibility="Visible">
@@ -456,244 +365,49 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <!-- Electrical Department Panel -->
-                    <Grid x:Name="Electrical_Panel" Visibility="Visible">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="87*"/>
-                        </Grid.RowDefinitions>
+                    <!-- Mechanical Department Panel -->
+                        <Grid x:Name="Mech_Panel" Visibility="Collapsed">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="87*"/>
+                            </Grid.RowDefinitions>
 
-                        <!-- Labels -->
-                        <Border Margin="29,47,131,0" Height="316" VerticalAlignment="Top">
-                            <Grid>
-                                <Label x:Name="Label1_S2_EE" Content="Methods of Mathematics" HorizontalAlignment="Center"  Margin="0,18,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
-                                <Label x:Name="Label2_S2_EE" Content="Computer Systems" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
-                                <Label x:Name="Label3_S2_EE" Content="Theory of Electricity" HorizontalAlignment="Center" Margin="0,86,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
-                                <Label x:Name="Label4_S2_EE" Content="Basic Electronics" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
-                                <Label x:Name="Label5_S2_EE" Content="Manufactering Processes" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
-                                <Label x:Name="Label6_S2_EE" Content="Communication Skills" HorizontalAlignment="Center" Margin="0,188,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
-                                <Label x:Name="Label7_S2_EE" Content="Language Skills" HorizontalAlignment="Center" Margin="0,222,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="290" Height="29"/>
-                            </Grid>
-                        </Border>
-
-                        <!-- Combo Boxes -->
-                        <Border Margin="324,48,10,0" Height="315" VerticalAlignment="Top">
-                            <Grid>
-                                <ComboBox x:Name="Grade1_S2_EE" Style="{StaticResource RoundedComboBox}" Margin="0,18,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade2_S2_EE" Style="{StaticResource RoundedComboBox}" Margin="0,52,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade3_S2_EE" Style="{StaticResource RoundedComboBox}" Margin="0,86,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade4_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade5_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade6_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,188,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade7_S2_EE" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,222,0,0" Width="58" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" Height="26" VerticalAlignment="Top">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                            </Grid>
-                        </Border>
-                    </Grid>
-
-                    <!-- CS Department Panel -->
-                    <Grid x:Name="CS_Panel" Visibility="Collapsed">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="87*"/>
-                        </Grid.RowDefinitions>
-
-                        <!-- Labels -->
-                        <Border Margin="29,47,131,158" Grid.RowSpan="2">
-                            <Grid Margin="0,0,-10,0">
-                                <Label x:Name="Label1_S2_CS" Content="CS 1" HorizontalAlignment="Left"  Margin="10,18,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label2_S2_CS" Content="CS 2" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label3_S2_CS" Content="CS 3" HorizontalAlignment="Left" Margin="10,86,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label4_S2_CS" Content="CS 4" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label5_S2_CS" Content="CS 5" HorizontalAlignment="Left" Margin="10,154,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                                <Label x:Name="Label6_S2_CS" Content="CS 6" HorizontalAlignment="Left" Margin="10,188,0,0" VerticalAlignment="Top" Foreground="White" FontSize="14" Width="280" Height="29"/>
-                            </Grid>
-                        </Border>
-
-                        <!-- Combo Boxes -->
-                        <Border Margin="324,47,10,158">
-                            <Grid>
-                                <ComboBox x:Name="Grade1_S2_CS" Style="{StaticResource RoundedComboBox}" Margin="0,18,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" Grid.RowSpan="2" HorizontalAlignment="Center" Width="58">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade2_S2_CS" Style="{StaticResource RoundedComboBox}" Margin="0,52,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade3_S2_CS" Style="{StaticResource RoundedComboBox}" Margin="0,86,0,0" VerticalAlignment="Top" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White" HorizontalAlignment="Center" Width="58">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade4_S2_CS" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade5_S2_CS" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,154,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                                <ComboBox x:Name="Grade6_S2_CS" Style="{StaticResource RoundedComboBox}" HorizontalAlignment="Center" Margin="0,188,0,0" VerticalAlignment="Top" Width="58" Height="26" SelectedIndex="-1" FontSize="14" BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White">
-                                    <ComboBoxItem Content="A+"/>
-                                    <ComboBoxItem Content="A"/>
-                                    <ComboBoxItem Content="A-"/>
-                                    <ComboBoxItem Content="B+"/>
-                                    <ComboBoxItem Content="B"/>
-                                    <ComboBoxItem Content="B-"/>
-                                    <ComboBoxItem Content="C+"/>
-                                    <ComboBoxItem Content="C"/>
-                                    <ComboBoxItem Content="C-"/>
-                                    <ComboBoxItem Content="D"/>
-                                    <ComboBoxItem Content="F"/>
-                                </ComboBox>
-                            </Grid>
-                        </Border>
-                    </Grid>
-
+                            <!-- Stream Selector -->
+                            <ComboBox x:Name="Mech_Stream" 
+                                  Style="{StaticResource RoundedComboBox}" 
+                                  HorizontalAlignment="Center"
+                                  Margin="240,21,58,0" 
+                                  VerticalAlignment="Top" 
+                                  Width="152"
+                                  Height="26" 
+                                  SelectedIndex="0" 
+                                  FontSize="14" 
+                                  BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White"
+                                  SelectionChanged="Mech_Stream_SelectionChanged">
+                                <ComboBoxItem Content="General"/>
+                                <ComboBoxItem Content="Aeronautical"/>
+                                <ComboBoxItem Content="Biomechanical"/>
+                                <ComboBoxItem Content="Mechatronic"/>
+                            </ComboBox>
+                        </Grid>
+                    
                     <!-- Dynamic electives section -->
-                    <StackPanel Orientation="Horizontal" Margin="10,367,10,0" Height="33" VerticalAlignment="Top">
-                        <TextBlock Text="Electives" Foreground="White" FontSize="16" VerticalAlignment="Center" Width="100" Margin="15,0,0,0"/>
-                        <Button Style="{DynamicResource ButtonStyle2}" Content="+" Click="AddElective_Click" Width="35" Height="22" Margin="220,0,0,0" FontSize="12"/>
-                        <Button Style="{DynamicResource ButtonStyle2}" Content="−" Click="RemoveElective_Click" Width="35" Height="22" Margin="5,0,0,0" FontSize="12"/>
-                    </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10,367,10,0" Height="33" VerticalAlignment="Top">
+                            <TextBlock Text="Electives" Foreground="White" FontSize="16" VerticalAlignment="Center" Width="100" Margin="15,0,0,0"/>
+                            <Button Style="{DynamicResource ButtonStyle2}" Content="+" Click="AddElective_Click" Width="35" Height="22" Margin="220,0,0,0" FontSize="12"/>
+                            <Button Style="{DynamicResource ButtonStyle2}" Content="−" Click="RemoveElective_Click" Width="35" Height="22" Margin="5,0,0,0" FontSize="12"/>
+                        </StackPanel>
 
-                    <ScrollViewer x:Name="ElectiveScrollViewer" 
+                        <ScrollViewer x:Name="ElectiveScrollViewer" 
                                   Margin="29,405,24,150" 
                                   VerticalScrollBarVisibility="Auto" 
                                   HorizontalScrollBarVisibility="Disabled">
-                        <ScrollViewer.Resources>
-                            <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}"/>
-                        </ScrollViewer.Resources>
-                        <StackPanel x:Name="ElectiveRowsContainer" Orientation="Vertical"/>
-                    </ScrollViewer>
+                            <ScrollViewer.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}"/>
+                            </ScrollViewer.Resources>
+                            <StackPanel x:Name="ElectiveRowsContainer" Orientation="Vertical"/>
+                        </ScrollViewer>
 
-                    <!-- Department selecter -->
+                    <!-- Department Selecter -->
                     <ComboBox x:Name="Department" 
                               Style="{StaticResource RoundedComboBox}"
                               HorizontalAlignment="Center" 
@@ -706,10 +420,11 @@
                               BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White"
                               SelectionChanged="Department_SelectionChanged">
                         <ComboBoxItem Content="Electrical"/>
-                        <!-- <ComboBoxItem Content="Computer Science"/> -->
+                        <ComboBoxItem Content="Computer Science"/>
+                        <ComboBoxItem Content="Mechanical"/>
                     </ComboBox>
                 </Grid>
-
+                
                 <!-- Calculate Button -->
                 <Button Style="{DynamicResource ButtonStyle1}" x:Name="Cal_Button" Content="Calculate" Click="Button_Click" Foreground="White" Background="#FF302B3C" FontSize="16" Margin="0,0,0,90" HorizontalAlignment="Center" Width="148" Height="42" VerticalAlignment="Bottom"/>
 
