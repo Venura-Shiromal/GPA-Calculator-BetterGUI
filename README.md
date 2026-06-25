@@ -18,6 +18,7 @@ This tool is designed with a **clean, user-friendly interface** to make GPA calc
     - Mechanical (with all **Streams**)
 - Electives are also supported
 
+---
 
 ## 📸 Screenshots
 
