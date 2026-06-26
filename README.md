@@ -11,7 +11,11 @@ This tool is designed with a **clean, user-friendly interface** to make GPA calc
 ---
 
 ## ✨ Features
-- **Semester 1** supported 
+- **Semester 1** supported for _all the departments_
+    - General (MPR)
+    - Textile (TM)
+    - Transport (TMLE)
+    - Earth Resource (ERE)
 - **Semester 2** supported for _all the departments_
     - Electrical (EE)
     - Electronics (ENTC)
