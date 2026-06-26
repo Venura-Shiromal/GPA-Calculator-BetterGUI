@@ -11,19 +11,31 @@ This tool is designed with a **clean, user-friendly interface** to make GPA calc
 ---
 
 ## ✨ Features
-- **MPR Student modules** (Semester 1 common intake)
-- **Semester 2** support for _the following departments_.
-    - Electrical
-    - Computer Science
-    - Mechanical (with all **Streams**)
-- Electives are also supported
-
+- **Semester 1** supported 
+- **Semester 2** supported for _all the departments_
+    - Electrical (EE)
+    - Electronics (ENTC)
+    - Biomedical (BM)
+    - Computer Science (CSE)
+    - Mechanical (ME)
+        - General
+        - Aeronautical
+        - Biomechanical
+        - Mechatronic
+    - Chemical (CH)
+    - Material (MT)
+    - Civil (CE)
+    - Textile (TM)
+    - Transport (TMLE)
+    - Earth Resource (ERE)
+- **Electives** are also supported (_for Semester 2_)
+  
 ---
 
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="GPA_Cal_BetterUI/assets/preview_v1.1.2.jpg" alt="GPA Calculator" width="450"/>
+  <img src="GPA_Cal_BetterUI/assets/preview.jpg" alt="GPA Calculator" width="450"/>
 </p>
 
 ---
