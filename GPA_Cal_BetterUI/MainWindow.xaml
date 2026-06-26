@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GPA_Cal_BetterUI"
         Title="GPA Calculator" 
-        Height="700" Width="450" 
+        Height="700" Width="520" 
         ResizeMode="NoResize"
         MinHeight="700" MinWidth="450"
         Opacity="0.95"
@@ -350,8 +350,8 @@
             <Grid>
 
                 <!-- Combo Boxes -->
-                <Border Margin="324,47,10,0" Height="316" VerticalAlignment="Top">
-                    <StackPanel x:Name="Grade_Panel"> </StackPanel>
+                <Border Margin="0,47,10,0" Height="316" VerticalAlignment="Top" HorizontalAlignment="Right" Width="116">
+                    <StackPanel x:Name="Grade_Panel"></StackPanel>
                 </Border>
 
                 <!-- Labels -->
@@ -366,46 +366,46 @@
                     </Grid.RowDefinitions>
 
                     <!-- Mechanical Department Panel -->
-                        <Grid x:Name="Mech_Panel" Visibility="Collapsed">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="87*"/>
-                            </Grid.RowDefinitions>
+                    <Grid x:Name="Mech_Panel" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="87*"/>
+                        </Grid.RowDefinitions>
 
-                            <!-- Stream Selector -->
-                            <ComboBox x:Name="Mech_Stream" 
+                        <!-- Stream Selector -->
+                        <ComboBox x:Name="Mech_Stream" 
                                   Style="{StaticResource RoundedComboBox}" 
                                   HorizontalAlignment="Center"
                                   Margin="240,21,58,0" 
                                   VerticalAlignment="Top" 
-                                  Width="152"
+                                  Width="162"
                                   Height="26" 
                                   SelectedIndex="0" 
                                   FontSize="14" 
                                   BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White"
                                   SelectionChanged="Mech_Stream_SelectionChanged">
-                                <ComboBoxItem Content="General"/>
-                                <ComboBoxItem Content="Aeronautical"/>
-                                <ComboBoxItem Content="Biomechanical"/>
-                                <ComboBoxItem Content="Mechatronic"/>
-                            </ComboBox>
-                        </Grid>
-                    
-                    <!-- Dynamic electives section -->
-                        <StackPanel Orientation="Horizontal" Margin="10,367,10,0" Height="33" VerticalAlignment="Top">
-                            <TextBlock Text="Electives" Foreground="White" FontSize="16" VerticalAlignment="Center" Width="100" Margin="15,0,0,0"/>
-                            <Button Style="{DynamicResource ButtonStyle2}" Content="+" Click="AddElective_Click" Width="35" Height="22" Margin="220,0,0,0" FontSize="12"/>
-                            <Button Style="{DynamicResource ButtonStyle2}" Content="−" Click="RemoveElective_Click" Width="35" Height="22" Margin="5,0,0,0" FontSize="12"/>
-                        </StackPanel>
+                            <ComboBoxItem Content="General"/>
+                            <ComboBoxItem Content="Aeronautical"/>
+                            <ComboBoxItem Content="Biomechanical"/>
+                            <ComboBoxItem Content="Mechatronic"/>
+                        </ComboBox>
+                    </Grid>
 
-                        <ScrollViewer x:Name="ElectiveScrollViewer" 
+                    <!-- Dynamic electives section -->
+                    <StackPanel Orientation="Horizontal" Margin="10,367,10,0" Height="33" VerticalAlignment="Top">
+                        <TextBlock Text="Electives" Foreground="White" FontSize="16" VerticalAlignment="Center" Width="100" Margin="15,0,0,0"/>
+                        <Button Style="{DynamicResource ButtonStyle2}" Content="+" Click="AddElective_Click" Width="35" Height="22" Margin="290,0,0,0" FontSize="12"/>
+                        <Button Style="{DynamicResource ButtonStyle2}" Content="−" Click="RemoveElective_Click" Width="35" Height="22" Margin="5,0,0,0" FontSize="12"/>
+                    </StackPanel>
+
+                    <ScrollViewer x:Name="ElectiveScrollViewer" 
                                   Margin="29,405,24,150" 
                                   VerticalScrollBarVisibility="Auto" 
                                   HorizontalScrollBarVisibility="Disabled">
-                            <ScrollViewer.Resources>
-                                <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}"/>
-                            </ScrollViewer.Resources>
-                            <StackPanel x:Name="ElectiveRowsContainer" Orientation="Vertical"/>
-                        </ScrollViewer>
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}"/>
+                        </ScrollViewer.Resources>
+                        <StackPanel x:Name="ElectiveRowsContainer" Orientation="Vertical"/>
+                    </ScrollViewer>
 
                     <!-- Department Selecter -->
                     <ComboBox x:Name="Department" 
@@ -413,18 +413,26 @@
                               HorizontalAlignment="Center" 
                               Margin="0,21,0,0" 
                               VerticalAlignment="Top" 
-                              Width="152" 
+                              Width="162" 
                               Height="26" 
                               SelectedIndex="0" 
                               FontSize="14" 
                               BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White"
                               SelectionChanged="Department_SelectionChanged">
                         <ComboBoxItem Content="Electrical"/>
+                        <ComboBoxItem Content="Electronic"/>
+                        <ComboBoxItem Content="Biomedical"/>
                         <ComboBoxItem Content="Computer Science"/>
                         <ComboBoxItem Content="Mechanical"/>
+                        <ComboBoxItem Content="Chemical"/>
+                        <ComboBoxItem Content="Material"/>
+                        <ComboBoxItem Content="Civil"/>
+                        <ComboBoxItem Content="Textile"/>
+                        <ComboBoxItem Content="Transport"/>
+                        <ComboBoxItem Content="Earth Resource"/>
                     </ComboBox>
                 </Grid>
-                
+
                 <!-- Calculate Button -->
                 <Button Style="{DynamicResource ButtonStyle1}" x:Name="Cal_Button" Content="Calculate" Click="Button_Click" Foreground="White" Background="#FF302B3C" FontSize="16" Margin="0,0,0,90" HorizontalAlignment="Center" Width="148" Height="42" VerticalAlignment="Bottom"/>
 

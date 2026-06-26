@@ -10,6 +10,20 @@ namespace GPA_Cal_BetterUI
     public partial class MainWindow : Window
     {
         // Default global variables
+        string[] departments = {
+                "Electrical",
+                "Electronic",
+                "Biomedical",
+                "Computer Science",
+                "Mechanical",
+                "Chemical",
+                "Material",
+                "Civil",
+                "Textile",
+                "Transport",
+                "Earth Resource",
+        };
+
         string department = "Electrical";
         string stream = "General";
         int semester = 1;
@@ -54,7 +68,7 @@ namespace GPA_Cal_BetterUI
                 ComboBox electiveCombo = new ComboBox
                 {
                     Style = (Style)FindResource("RoundedComboBox"),
-                    Width = 270,
+                    Width = 340,
                     Height = 26,
                     SelectedIndex = -1,
                     FontSize = 14,
@@ -66,16 +80,22 @@ namespace GPA_Cal_BetterUI
                 };
 
                 // Add new electives here (only module name)
-                string[] electives =
+
+                List<string> electives = new List<string>();
+
+                if (semester == 2)
                 {
-                "Visual Programming",
-                "Computer Systems",
-                "Introduction to Telecommunications",
-                "Basic Electronics",
-                "Manufacturing Processes",
-                "Entrepreneurship Theory",
-                "Humanities I"
-            };
+                    electives = new List<string>
+                        {
+                            "Visual Programming",
+                            "Computer Systems",
+                            "Introduction to Telecommunications Engineering",
+                            "Basic Electronics for Engineering Applications",
+                            "Introduction to Manufacturing Processes",
+                            "Entrepreneurship Theory",
+                            "Humanities I"
+                        };
+                }
 
                 foreach (string elective in electives)
                     electiveCombo.Items.Add(elective);
@@ -199,7 +219,7 @@ namespace GPA_Cal_BetterUI
             Border LabelBorder = new Border
             {
                 Height = h,
-                HorizontalAlignment = HorizontalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left,
                 Margin = new Thickness(0, b, 0, 0)
             };
 
@@ -209,7 +229,7 @@ namespace GPA_Cal_BetterUI
                 VerticalAlignment = VerticalAlignment.Top,
                 Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("White"),
                 FontSize = 14,
-                Width = 280,
+                Width = 350,
                 Height = 29,
                 Margin = new Thickness(10, 0, 0, 0),
                 Content = name
@@ -226,7 +246,8 @@ namespace GPA_Cal_BetterUI
             string moduleFirst = "";
             int h = 46; int b = 29;
 
-            if (semester == 1) {
+            if (semester == 1)
+            {
 
                 h = 46; b = 29;
                 moduleFirst = "Mathematics";
@@ -238,23 +259,48 @@ namespace GPA_Cal_BetterUI
                     "Fluid Mechanics"
                 };
 
-            } else if (semester == 2)
+            }
+            else if (semester == 2)
             {
                 h = 34; b = 18;
                 moduleFirst = "Methods of Mathematics";
 
-                if (department == "Electrical")
+                if (department == departments[0])
                 {
                     moduleLabels = new List<string> {
                     "Theory of Electricity",
                     "Computer Systems",
-                    "Basic Electronics",
-                    "Manufacturing Processes",
+                    "Basic Electronics for Engineering Applications",
+                    "Introduction to Manufacturing Processes",
                     "Communication Skills",
                     "Language Skills"
                     };
                 }
-                else if (department == "Computer Science")
+                else if (department == departments[1])
+                {
+                    moduleLabels = new List<string> {
+                    "Electronic Engineering",
+                    "Introduction to Telecommunications Engineering",
+                    "Circuits, Signals, and Systems",
+                    "Laboratory Practice",
+                    "Communication Skills",
+                    "Language Skills",
+                    "Engineering Design Project"
+                    };
+                }
+                else if (department == departments[2])
+                {
+                    moduleLabels = new List<string> {
+                    "Electronic Engineering",
+                    "Introduction to Telecommunications Engineering",
+                    "Circuits, Signals, and Systems",
+                    "Laboratory Practice",
+                    "Communication Skills",
+                    "Language Skills",
+                    "Engineering Design Project"
+                    };
+                }
+                else if (department == departments[3])
                 {
                     moduleLabels = new List<string> {
                     "Theory of Electricity",
@@ -264,7 +310,7 @@ namespace GPA_Cal_BetterUI
                     "Language Skills"
                     };
                 }
-                else if (department == "Mechanical")
+                else if (department == departments[4])
                 {
                     moduleLabels = new List<string> {
                     "Mechanics of Materials I",
@@ -280,6 +326,71 @@ namespace GPA_Cal_BetterUI
                     {
                         moduleLabels[moduleLabels.IndexOf("Fundamentals of Mechatronics")] = "Mechatronic Systems Engineering";
                     }
+                }
+                else if (department == departments[5])
+                {
+                    moduleLabels = new List<string> {
+                    "Engineering Thermodynamics",
+                    "Fluid Dynamics",
+                    "Chemistry and Green Chemistry for Process Engineers",
+                    "Chemical and Bioprocess Engineering Principles",
+                    "Language Skills"
+                    };
+                }
+                else if (department == departments[6])
+                {
+                    moduleLabels = new List<string> {
+                    "Visual Programming",
+                    "Basic Electronics for Engineering Applications",
+                    "Engineering Drawing and Computer Aided Modelling",
+                    "Thermodynamics and Phase Equilibria",
+                    "Fundamentals of Materials Science",
+                    "Language Skills"
+                    };
+                }
+                else if (department == departments[7])
+                {
+                    moduleLabels = new List<string> {
+                    "Structural Mechanics I",
+                    "Fluid Dynamics",
+                    "Building Construction and Materials",
+                    "Language Skills"
+                    };
+                }
+                else if (department == departments[8])
+                {
+                    moduleLabels = new List<string> {
+                    "Visual Programming",
+                    "Basic Electronics Engineering Applications",
+                    "Introduction to Textile and Apparel Industry",
+                    "Textile Chemistry",
+                    "Pattern Technology and Construction I",
+                    "Engineering Materials",
+                    "Principles of Textile Machinery & Instrumentation",
+                    "Language Skills"
+                    };
+                }
+                else if (department == departments[9])
+                {
+                    moduleLabels = new List<string> {
+                    "Mathematics for Transport & Logistics II",
+                    "Macroeconomics and International Trade",
+                    "Introduction to Business and Management",
+                    "Data Collection and Processing",
+                    "Multimodal Transport Networks",
+                    "Communication Skills II"
+                    };
+                }
+                else if (department == departments[10])
+                {
+                    moduleLabels = new List<string> {
+                    "Geology",
+                    "Introduction to Mining & Mineral Engineering",
+                    "Basic Mine Thermodynamics",
+                    "Engineering Drawing & Computer Aided Modeling",
+                    "Humanities I",
+                    "Language Skills"
+                    };
                 }
             }
 
@@ -349,32 +460,62 @@ namespace GPA_Cal_BetterUI
         private void DepartmentSwitcher(string department)
         {
             AddModuleLabels();
+            AddComboBox_Dep(34, 18);
 
-            switch (department) 
+            if (department == departments[0])
             {
-                case "Electrical":
-                    Mech_Panel.Visibility = Visibility.Collapsed;
-                    Department.Margin = new Thickness(0, 21, 0, 0);
-                    AddComboBox_Dep(34, 18);
-                    break;
-
-                case "Computer Science":
-                    Mech_Panel.Visibility = Visibility.Collapsed;
-                    Department.Margin = new Thickness(0, 21, 0, 0);
-                    AddComboBox_Dep(34, 18);
-                    break;
-
-                case "Mechanical":
-                    Mech_Panel.Visibility = Visibility.Visible;
-                    Department.Margin = new Thickness(58, 21, 240, 0);
-                    AddComboBox_Dep(34, 18);
-                    break;
-
-                default:
-                    Mech_Panel.Visibility = Visibility.Collapsed;
-                    Department.Margin = new Thickness(0, 21, 0, 0);
-                    AddComboBox_Dep(34, 18);
-                    break;
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
+            } 
+            else if (department == departments[1])
+            {
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
+            }
+            else if (department == departments[2])
+            {
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
+            }
+            else if (department == departments[3])
+            {
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
+            }
+            else if (department == departments[4])
+            {
+                Mech_Panel.Visibility = Visibility.Visible;
+                Department.Margin = new Thickness(58, 21, 240, 0);
+            }
+            else if (department == departments[5])
+            {
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
+            }
+            else if (department == departments[6])
+            {
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
+            }
+            else if (department == departments[7])
+            {
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
+            }
+            else if (department == departments[8])
+            {
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
+            }
+            else if (department == departments[9])
+            {
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
+            }
+            else if (department == departments[10])
+            {
+                Mech_Panel.Visibility = Visibility.Collapsed;
+                Department.Margin = new Thickness(0, 21, 0, 0);
             }
         }
 
@@ -452,27 +593,59 @@ namespace GPA_Cal_BetterUI
         }
 
         // Credits array selector (for adding new semester or department course credits)
-        private int[] CompulsaryCredit()
+        private List<int> CompulsaryCredit()
         {
-            int[] credits = null;
+            List<int> credits = null;
 
             if (semester == 1)
             {
-                credits = new int[] { 3, 3, 2, 2, 2, 2 };
+                credits = new List<int> { 3, 3, 2, 2, 2, 2 };
             }
             else
             {
-                if (department == "Electrical") 
+                if (department == departments[0]) 
                 {
-                    credits = new int[] { 3, 3, 3, 3, 3, 2, 2 };
-                } 
-                else if (department == "Computer Science")
-                {
-                    credits = new int[] { 3, 3, 3, 3, 3, 2 };
+                    credits = new List<int> { 3, 3, 3, 3, 3, 2, 2 };
                 }
-                else if (department == "Mechanical")
+                else if (department == departments[1])
                 {
-                    credits = new int[] { 3, 3, 3, 3, 3, 3, 2, 2 };
+                    credits = new List<int> { 3, 4, 4, 3, 2, 2, 2, 3 };
+                }
+                else if (department == departments[2])
+                {
+                    credits = new List<int> { 3, 4, 4, 3, 2, 2, 2, 4 };
+                }
+                else if (department == departments[3])
+                {
+                    credits = new List<int> { 3, 3, 3, 3, 3, 2 };
+                }
+                else if (department == departments[4])
+                {
+                    credits = new List<int> { 3, 3, 3, 3, 3, 3, 2, 2 };
+                }
+                else if (department == departments[5])
+                {
+                    credits = new List<int> { 3, 3, 4, 3, 4, 2 };
+                }
+                else if (department == departments[6])
+                {
+                    credits = new List<int> { 3, 2, 3, 3, 3, 4, 2 };
+                }
+                else if (department == departments[7])
+                {
+                    credits = new List<int> { 3, 3, 3, 3, 2 };
+                }
+                else if (department == departments[8])
+                {
+                    credits = new List<int> { 3, 2, 3, 3, 3, 2, 2, 2, 2 };
+                }
+                else if (department == departments[9])
+                {
+                    credits = new List<int> { 3, 3, 2, 4, 3, 3, 2 };
+                }
+                else if (department == departments[10])
+                {
+                    credits = new List<int> { 3, 3, 2, 2, 3, 2, 2 };
                 }
             }
 
@@ -530,8 +703,13 @@ namespace GPA_Cal_BetterUI
         // Calculate button clicked
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var credits = CompulsaryCredit();
             var grades = GetGrades();
+            var credits = CompulsaryCredit();
+
+            (List<double> grades_El, List<int> credits_El) = GetSelectedElectives();
+
+            grades.AddRange(grades_El);
+            credits.AddRange(credits_El);
 
             double gpa = GpaCalculator(grades.ToArray(), credits.ToArray());
             Result.Content = "GPA = " + gpa.ToString("F2");
