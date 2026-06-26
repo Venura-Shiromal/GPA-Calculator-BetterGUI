@@ -350,14 +350,35 @@
             <Grid>
 
                 <!-- Combo Boxes -->
-                <Border Margin="0,47,10,0" Height="316" VerticalAlignment="Top" HorizontalAlignment="Right" Width="116">
+                <Border Margin="0,47,10,0" Height="460" VerticalAlignment="Top" HorizontalAlignment="Right" Width="116">
                     <StackPanel x:Name="Grade_Panel"></StackPanel>
                 </Border>
 
                 <!-- Labels -->
-                <Border Margin="10,47,126,0" Height="316" VerticalAlignment="Top">
+                <Border Margin="10,47,126,0" Height="460" VerticalAlignment="Top">
                     <StackPanel x:Name="Labels_Panel"></StackPanel>
                 </Border>
+
+                <!-- Semester 1 Tab -->
+                <Grid x:Name="Semester1Panel" Visibility="Collapsed">
+                    <!-- Department Selecter -->
+                    <ComboBox x:Name="Department_Sem1" 
+                      Style="{StaticResource RoundedComboBox}"
+                      HorizontalAlignment="Center" 
+                      Margin="0,30,0,0" 
+                      VerticalAlignment="Top" 
+                      Width="162" 
+                      Height="31" 
+                      SelectedIndex="0" 
+                      FontSize="14" 
+                      BorderBrush="{x:Null}" Background="#FF2C2835" Foreground="White"
+                      SelectionChanged="Sem1Dep_SelectionChanged">
+                        <ComboBoxItem Content="General"/>
+                        <ComboBoxItem Content="Textile"/>
+                        <ComboBoxItem Content="Transport"/>
+                        <ComboBoxItem Content="Earth Resource"/>
+                    </ComboBox>
+                </Grid>
 
                 <!-- Semester 2 Tab -->
                 <Grid x:Name="Semester2Panel" Visibility="Visible">

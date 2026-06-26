@@ -24,6 +24,7 @@ namespace GPA_Cal_BetterUI
                 "Earth Resource"
         };
 
+        string department_S1 = "General";
         string department = "Electrical";
         string stream = "General";
         int semester = 1;
@@ -248,17 +249,29 @@ namespace GPA_Cal_BetterUI
 
             if (semester == 1)
             {
-
                 h = 46; b = 29;
                 moduleFirst = "Mathematics";
                 moduleLabels = new List<string> {
-                    "Programming Fundamentals",
-                    "Electrical Fundamentals",
-                    "Properties of Materials",
-                    "Mechanics",
-                    "Fluid Mechanics"
-                };
+                        "Programming Fundamentals",
+                        "Electrical Fundamentals",
+                        "Properties of Materials",
+                        "Mechanics",
+                        "Fluid Mechanics"
+                    };
 
+                if (department_S1 == departments[8])
+                {
+                    moduleLabels.Add("Fibre Science");
+                }
+                else if (department_S1 == departments[9])
+                {
+                    moduleLabels.Remove("Mechanics");
+                    moduleLabels.Remove("Properties of Materials");
+                    moduleLabels.Remove("Fluid Mechanics");
+                    moduleLabels.Add("Mechanics in Transport");
+                    moduleLabels.Add("Fundamentals of Transport and Logistics Systems");
+                    moduleLabels.Add("Fluid Mechanics");
+                }
             }
             else if (semester == 2)
             {
@@ -344,7 +357,7 @@ namespace GPA_Cal_BetterUI
                     "Basic Electronics for Engineering Applications",
                     "Engineering Drawing and Computer Aided Modelling",
                     "Thermodynamics and Phase Equilibria",
-                    "Fundamentals of Materials Science",
+                    "Fundamentals of Materials Science and Engineering",
                     "Language Skills"
                     };
                 }
@@ -373,12 +386,12 @@ namespace GPA_Cal_BetterUI
                 else if (department == departments[9])
                 {
                     moduleLabels = new List<string> {
-                    "Mathematics for Transport & Logistics II",
-                    "Macroeconomics and International Trade",
-                    "Introduction to Business and Management",
-                    "Data Collection and Processing",
-                    "Multimodal Transport Networks",
-                    "Communication Skills II"
+                    "Visual Programming",
+                    "Basic Electronics for Engineering Applications",
+                    "Operations Research for Transport and Logistics Systems",
+                    "Geo-Spatial Analysis",
+                    "Systems Engineering",
+                    "Language Skills"
                     };
                 }
                 else if (department == departments[10])
@@ -417,6 +430,21 @@ namespace GPA_Cal_BetterUI
             }
         }
 
+        // Reset Departments
+        private void ResetDepartments(int sem)
+        {
+            if (sem == 1)
+            {
+                Department.SelectedIndex = 0;
+                department = "Electrical";
+            }
+            else if (sem == 2)
+            {
+                Department_Sem1.SelectedIndex = 0;
+                department_S1 = "General";
+            }
+        }
+
         // Switching semesters
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -424,6 +452,7 @@ namespace GPA_Cal_BetterUI
             if (tabControl == 0) semester = 1;
             if (tabControl == 1) semester = 2;
             SemSwitcher(semester);
+            ResetDepartments(semester);
         }
 
         // Add new semesters here
@@ -433,15 +462,28 @@ namespace GPA_Cal_BetterUI
 
             if (sem == 1)
             {
+                Semester1Panel.Visibility = Visibility.Visible;
                 Semester2Panel.Visibility = Visibility.Collapsed;
                 AddModuleLabels();
                 AddComboBox_Dep(46, 29);
             }
             else if (sem == 2)
             {
+                Semester1Panel.Visibility = Visibility.Collapsed;
                 Semester2Panel.Visibility = Visibility.Visible;
                 AddModuleLabels();
                 AddComboBox_Dep(34, 18);
+            }
+        }
+
+        // Switching departments (Sem 1)
+        private void Sem1Dep_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Department_Sem1.SelectedItem is ComboBoxItem selectedDepSem1)
+            {
+                string deptS1 = selectedDepSem1.Content.ToString();
+                department_S1 = deptS1;
+                DepartmentSwitcher(deptS1);
             }
         }
 
@@ -450,9 +492,9 @@ namespace GPA_Cal_BetterUI
         {
             if (Department.SelectedItem is ComboBoxItem selectedDept)
             {
-                string dept = selectedDept.Content.ToString();
-                department = dept;
-                DepartmentSwitcher(dept);
+                string deptS2 = selectedDept.Content.ToString();
+                department = deptS2;
+                DepartmentSwitcher(deptS2);
             }
         }
 
@@ -460,62 +502,70 @@ namespace GPA_Cal_BetterUI
         private void DepartmentSwitcher(string department)
         {
             AddModuleLabels();
-            AddComboBox_Dep(34, 18);
 
-            if (department == departments[0])
+            if (semester == 1)
             {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
-            } 
-            else if (department == departments[1])
-            {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
+                AddComboBox_Dep(46, 29);
             }
-            else if (department == departments[2])
+            else if (semester == 2)
             {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
-            }
-            else if (department == departments[3])
-            {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
-            }
-            else if (department == departments[4])
-            {
-                Mech_Panel.Visibility = Visibility.Visible;
-                Department.Margin = new Thickness(58, 21, 240, 0);
-            }
-            else if (department == departments[5])
-            {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
-            }
-            else if (department == departments[6])
-            {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
-            }
-            else if (department == departments[7])
-            {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
-            }
-            else if (department == departments[8])
-            {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
-            }
-            else if (department == departments[9])
-            {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
-            }
-            else if (department == departments[10])
-            {
-                Mech_Panel.Visibility = Visibility.Collapsed;
-                Department.Margin = new Thickness(0, 21, 0, 0);
+                AddComboBox_Dep(34, 18);
+
+                if (department == departments[0])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
+                else if (department == departments[1])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
+                else if (department == departments[2])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
+                else if (department == departments[3])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
+                else if (department == departments[4])
+                {
+                    Mech_Panel.Visibility = Visibility.Visible;
+                    Department.Margin = new Thickness(58, 21, 240, 0);
+                }
+                else if (department == departments[5])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
+                else if (department == departments[6])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
+                else if (department == departments[7])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
+                else if (department == departments[8])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
+                else if (department == departments[9])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
+                else if (department == departments[10])
+                {
+                    Mech_Panel.Visibility = Visibility.Collapsed;
+                    Department.Margin = new Thickness(0, 21, 0, 0);
+                }
             }
         }
 
@@ -599,7 +649,22 @@ namespace GPA_Cal_BetterUI
 
             if (semester == 1)
             {
-                credits = new List<int> { 3, 3, 2, 2, 2, 2 };
+                if (department == "General")
+                {
+                    credits = new List<int> { 3, 3, 2, 2, 2, 2 };
+                }
+                else if (department == departments[8])
+                {
+                    credits = new List<int> { 3, 3, 2, 2, 2, 2, 3 };
+                }
+                else if (department == departments[9])
+                {
+                    credits = new List<int> { 3, 3, 2, 3, 3, 2 };
+                }
+                else if (department == departments[10])
+                {
+                    credits = new List<int> { 3, 3, 2, 2, 2, 2 };
+                }
             }
             else
             {
@@ -641,7 +706,7 @@ namespace GPA_Cal_BetterUI
                 }
                 else if (department == departments[9])
                 {
-                    credits = new List<int> { 3, 3, 2, 4, 3, 3, 2 };
+                    credits = new List<int> { 3, 2, 3, 3, 3, 3, 2 };
                 }
                 else if (department == departments[10])
                 {
