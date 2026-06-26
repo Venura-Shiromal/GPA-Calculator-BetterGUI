@@ -21,7 +21,7 @@ namespace GPA_Cal_BetterUI
                 "Civil",
                 "Textile",
                 "Transport",
-                "Earth Resource",
+                "Earth Resource"
         };
 
         string department = "Electrical";
