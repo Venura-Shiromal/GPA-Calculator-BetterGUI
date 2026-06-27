@@ -34,7 +34,8 @@ This tool is designed with a **clean, user-friendly interface** to make GPA calc
     - Transport (TMLE)
     - Earth Resource (ERE)
       
-- **Electives** are also supported (_for Semester 2_)
+- **Electives** are supported
+- Added **General Tab** which is for anyone that needs a GPA calculation (Just add the modules along with the credits)
   
 ---
 
