@@ -280,6 +280,60 @@
             </Setter>
         </Style>
 
+        <Style x:Key="RoundedTextBox" TargetType="TextBox">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#FF302B3C"/>
+            <Setter Property="BorderBrush" Value="#FF403B55"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6,2"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Bahnschrift"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="SelectionBrush" Value="#FF565075"/>
+            <Setter Property="CaretBrush" Value="White"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="10"
+                        SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                  Margin="{TemplateBinding Padding}"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  Background="Transparent"
+                                  Foreground="{TemplateBinding Foreground}"
+                                  SnapsToDevicePixels="True"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#FF403B55"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#FF565075"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FF565075"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#FF1E1C25"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FF1E1C25"/>
+                                <Setter Property="Foreground" Value="#FF555555"/>
+                            </Trigger>
+                            <Trigger Property="IsReadOnly" Value="True">
+                                <Setter TargetName="Border" Property="Background" Value="#FF2C2835"/>
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#FF2C2835"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style TargetType="TabItem">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#FF2C2835"/>
@@ -340,24 +394,27 @@
         </Grid.RowDefinitions>
 
         <TabControl Grid.Row="0" Background="Transparent" BorderThickness="0"
-                    Margin="0,5,0,0" SelectionChanged="TabControl_SelectionChanged">
+                    Margin="0,0,0,0" SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="Sem 1"/>
             <TabItem Header="Sem 2"/>
+            <TabItem Header="General"/>
         </TabControl>
 
         <!-- Main Window -->
         <Border Grid.Row="1" CornerRadius="2,20,20,20" Background="#FF0E0D11" SnapsToDevicePixels="True">
             <Grid>
 
+                <Grid x:Name="CompulsaryPanel" Visibility="Visible">   
                 <!-- Combo Boxes -->
-                <Border Margin="0,47,10,0" Height="460" VerticalAlignment="Top" HorizontalAlignment="Right" Width="116">
-                    <StackPanel x:Name="Grade_Panel"></StackPanel>
-                </Border>
+                    <Border Margin="0,47,10,0" Height="460" VerticalAlignment="Top" HorizontalAlignment="Right" Width="116">
+                        <StackPanel x:Name="Grade_Panel"></StackPanel>
+                    </Border>
 
-                <!-- Labels -->
-                <Border Margin="10,47,126,0" Height="460" VerticalAlignment="Top">
-                    <StackPanel x:Name="Labels_Panel"></StackPanel>
-                </Border>
+                    <!-- Labels -->
+                    <Border Margin="10,47,126,0" Height="460" VerticalAlignment="Top">
+                        <StackPanel x:Name="Labels_Panel"></StackPanel>
+                    </Border>
+                </Grid>
 
                 <!-- Semester 1 Tab -->
                 <Grid x:Name="Semester1Panel" Visibility="Collapsed">
@@ -452,6 +509,32 @@
                         <ComboBoxItem Content="Transport"/>
                         <ComboBoxItem Content="Earth Resource"/>
                     </ComboBox>
+                </Grid>
+
+                <!-- General Tab -->
+                <Grid x:Name="GeneralPanel" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal" Margin="10,45,10,0" Height="33" VerticalAlignment="Top">
+                        <TextBlock Text="Add or Remove Modules" Foreground="White" FontSize="16" VerticalAlignment="Center" Width="300" Margin="15,0,0,0"/>
+                        <Button Style="{DynamicResource ButtonStyle2}" Content="+" Click="AddModule_Click" Width="35" Height="22" Margin="90,0,0,0" FontSize="12"/>
+                        <Button Style="{DynamicResource ButtonStyle2}" Content="−" Click="RemoveModule_Click" Width="35" Height="22" Margin="5,0,0,0" FontSize="12"/>
+                    </StackPanel>
+                    <Grid x:Name="HeaderRow" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" Margin="29,90,24,0" Height="23" VerticalAlignment="Top">
+                            <TextBlock Text="Module" TextAlignment="Center" Foreground="White" FontSize="15" VerticalAlignment="Center" Width="267" Margin="0,0,0,0"/>
+                            <TextBlock Text="Credit" TextAlignment="Center" Foreground="White" FontSize="15" VerticalAlignment="Center" Width="56" Margin="36,0,0,0"/>
+                            <TextBlock Text="Grade" TextAlignment="Center" Foreground="White" FontSize="15" VerticalAlignment="Center" Width="56" Margin="36,0,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <ScrollViewer x:Name="ModuleScrollViewer" 
+                                  Margin="29,118,24,150" 
+                                  VerticalScrollBarVisibility="Auto" 
+                                  HorizontalScrollBarVisibility="Disabled">
+                        <ScrollViewer.Resources>
+                            <Style TargetType="ScrollBar" BasedOn="{StaticResource CustomScrollBar}"/>
+                        </ScrollViewer.Resources>
+                        <StackPanel x:Name="ModuleRowsContainer" Orientation="Vertical"/>
+                    </ScrollViewer>
                 </Grid>
 
                 <!-- Calculate Button -->

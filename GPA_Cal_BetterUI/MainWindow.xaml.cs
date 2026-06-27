@@ -32,7 +32,9 @@ namespace GPA_Cal_BetterUI
         private List<ComboBox> gradeComboList = new List<ComboBox>();
         private List<string> moduleList = new List<string>();
         private List<(ComboBox electiveCombo, ComboBox gradeCombo)> electivePairs = new List<(ComboBox, ComboBox)>();
+        private List<(TextBox creditBox, ComboBox gradeCombo)> modulePairs = new List<(TextBox, ComboBox)>();
         private const int MAX_ELECTIVES = 10;
+        private const int MAX_MODULES = 20;
 
         public MainWindow()
         {
@@ -102,7 +104,7 @@ namespace GPA_Cal_BetterUI
                     electiveCombo.Items.Add(elective);
 
                 // Create grade ComboBox
-                ComboBox gradeCombo = CreateGradeCombo();
+                ComboBox gradeCombo = CreateGradeCombo(54);
 
                 // Add both to the row panel
                 rowPanel.Children.Add(electiveCombo);
@@ -147,8 +149,88 @@ namespace GPA_Cal_BetterUI
             RemoveElectiveRow();
         }
 
+        // Add module row
+        private void AddModuleRow()
+        {
+            HeaderRow.Visibility = Visibility.Visible;
+
+            if (modulePairs.Count < MAX_MODULES)
+            {
+                // Create a horizontal container for the pair
+                StackPanel rowPanel = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Height = 36,
+                    Margin = new Thickness(0, 0, 0, 0)
+                };
+
+                // Create module TextBox
+                TextBox moduleBox = new TextBox
+                {
+                    Style = (Style)FindResource("RoundedTextBox"),
+                    Width = 267,
+                    Height = 26,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    FontSize = 14
+                };
+
+                TextBox creditBox = new TextBox
+                {
+                    Style = (Style)FindResource("RoundedTextBox"),
+                    Width = 56,
+                    Height = 26,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    FontSize = 14,
+                    Margin = new Thickness( 36, 0, 0, 0 )
+                };
+
+                // Create grade ComboBox
+                ComboBox gradeCombo = CreateGradeCombo(36);
+
+                // Add them to the row panel
+                rowPanel.Children.Add(moduleBox);
+                rowPanel.Children.Add(creditBox);
+                rowPanel.Children.Add(gradeCombo);
+
+                // Add row to container
+                ModuleRowsContainer.Children.Add(rowPanel);
+                modulePairs.Add((creditBox, gradeCombo));
+            }
+        }
+
+        // Remove last elective row
+        private void RemoveModuleRow()
+        {
+            if (modulePairs.Count > 0)
+            {
+                var lastPair = modulePairs.Last();
+                var rowToRemove = ModuleRowsContainer.Children[ModuleRowsContainer.Children.Count - 1] as StackPanel;
+                ModuleRowsContainer.Children.Remove(rowToRemove);
+                modulePairs.RemoveAt(modulePairs.Count - 1);
+            }
+
+            if (modulePairs.Count == 0)
+            {
+                HeaderRow.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        // Add module button click
+        private void AddModule_Click(object sender, RoutedEventArgs e)
+        {
+            AddModuleRow();
+        }
+
+        // Remove module button click
+        private void RemoveModule_Click(object sender, RoutedEventArgs e)
+        {
+            RemoveModuleRow();
+        }
+
         // Create grade ComboBox
-        private ComboBox CreateGradeCombo()
+        private ComboBox CreateGradeCombo(int gap)
         {
             ComboBox gradeCombo = new ComboBox
             {
@@ -162,7 +244,7 @@ namespace GPA_Cal_BetterUI
                 Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("White"),
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(54, 0, 0, 0)
+                Margin = new Thickness(gap, 0, 0, 0)
             };
 
             string[] grades = { "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F" };
@@ -182,8 +264,7 @@ namespace GPA_Cal_BetterUI
                 Margin = new Thickness(0, b, 0, 0)
             };
 
-            ComboBox gradeCombo = CreateGradeCombo();
-            gradeCombo.Margin = new Thickness(0, 0, 0, 0);
+            ComboBox gradeCombo = CreateGradeCombo(0);
 
             gradeComboList.Add(gradeCombo);
 
@@ -400,7 +481,7 @@ namespace GPA_Cal_BetterUI
                     "Geology",
                     "Introduction to Mining & Mineral Engineering",
                     "Basic Mine Thermodynamics",
-                    "Engineering Drawing & Computer Aided Modeling",
+                    "Engineering Drawing & Computer Aided Modelling",
                     "Humanities I",
                     "Language Skills"
                     };
@@ -451,6 +532,7 @@ namespace GPA_Cal_BetterUI
             int tabControl = (sender as TabControl).SelectedIndex;
             if (tabControl == 0) semester = 1;
             if (tabControl == 1) semester = 2;
+            if (tabControl == 2) semester = 0;
             SemSwitcher(semester);
             ResetDepartments(semester);
         }
@@ -460,17 +542,28 @@ namespace GPA_Cal_BetterUI
         {
             Result.Content = "";
 
-            if (sem == 1)
+            if (sem == 0)
             {
+                CompulsaryPanel.Visibility = Visibility.Collapsed;
+                Semester1Panel.Visibility = Visibility.Collapsed;
+                Semester2Panel.Visibility = Visibility.Collapsed;
+                GeneralPanel.Visibility = Visibility.Visible;
+            }
+            else if (sem == 1)
+            {
+                CompulsaryPanel.Visibility = Visibility.Visible;
                 Semester1Panel.Visibility = Visibility.Visible;
                 Semester2Panel.Visibility = Visibility.Collapsed;
+                GeneralPanel.Visibility = Visibility.Collapsed;
                 AddModuleLabels();
                 AddComboBox_Dep(46, 29);
             }
             else if (sem == 2)
             {
+                CompulsaryPanel.Visibility = Visibility.Visible;
                 Semester1Panel.Visibility = Visibility.Collapsed;
                 Semester2Panel.Visibility = Visibility.Visible;
+                GeneralPanel.Visibility = Visibility.Collapsed;
                 AddModuleLabels();
                 AddComboBox_Dep(34, 18);
             }
@@ -643,7 +736,7 @@ namespace GPA_Cal_BetterUI
         }
 
         // Credits array selector (for adding new semester or department course credits)
-        private List<int> CompulsaryCredit()
+        private List<int> CompulsoryCredit()
         {
             List<int> credits = null;
 
@@ -749,7 +842,7 @@ namespace GPA_Cal_BetterUI
             return (electiveGrades, electiveCredits);
         }
 
-        // Get grades of compulsary modules
+        // Get grades of compulsory modules
         private List<double> GetGrades()
         {
             var gradesList = new List<double>();
@@ -765,18 +858,60 @@ namespace GPA_Cal_BetterUI
             return gradesList;
         }
 
+        // Get General Tab Module Credit and Grade
+        private (List<int> creditList, List<double> gradeList) getGeneralModules()
+        {
+            List<int> creditList = new List<int>();
+            List<double> gradeList = new List<double>();
+
+            foreach ((TextBox credit, ComboBox grade) in modulePairs)
+            {
+
+                if (!int.TryParse(credit.Text, out int creditValue))
+                {
+                    Result.Content = "Enter a valid credit value";
+                }
+
+                if (grade.SelectedIndex == -1)
+                {
+                    Result.Content = "Please input all grades";
+                }
+
+                creditList.Add(creditValue);
+                gradeList.Add(GradeToGradePoint(grade.SelectedIndex));
+            }
+
+            return (creditList, gradeList);
+        }
+
         // Calculate button clicked
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var grades = GetGrades();
-            var credits = CompulsaryCredit();
+            var creditList = new List<int>();
+            var gradeList = new List<double>();
 
-            (List<double> grades_El, List<int> credits_El) = GetSelectedElectives();
+            if (semester == 0)
+            {
+                (List<int> credit_List, List<double> grade_List) = getGeneralModules();
 
-            grades.AddRange(grades_El);
-            credits.AddRange(credits_El);
+                creditList.AddRange(credit_List);
+                gradeList.AddRange(grade_List);
+            }
+            else
+            {
+                var grades = GetGrades();
+                var credits = CompulsoryCredit();
 
-            double gpa = GpaCalculator(grades.ToArray(), credits.ToArray());
+                (List<double> grades_El, List<int> credits_El) = GetSelectedElectives();
+
+                grades.AddRange(grades_El);
+                credits.AddRange(credits_El);
+
+                gradeList.AddRange(grades);
+                creditList.AddRange(credits);
+            }
+
+            double gpa = GpaCalculator(gradeList.ToArray(), creditList.ToArray());
             Result.Content = "GPA = " + gpa.ToString("F2");
         }
     }
