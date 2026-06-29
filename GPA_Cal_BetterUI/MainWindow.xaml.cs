@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace GPA_Cal_BetterUI
 {
@@ -93,47 +94,85 @@ namespace GPA_Cal_BetterUI
         {
             if (element == null) return;
 
-            // Ensure it's visible and has a transform
+            // Make the element visible (if it was collapsed)
             element.Visibility = Visibility.Visible;
+
+            // Ensure a TranslateTransform exists
             if (!(element.RenderTransform is TranslateTransform))
                 element.RenderTransform = new TranslateTransform();
-            element.Opacity = 0;
-            ((TranslateTransform)element.RenderTransform).Y = -10; // slide from above
+            element.RenderTransformOrigin = new Point(0.5, 0.5);
 
+            // Stop any running animations on these properties
+            element.BeginAnimation(UIElement.OpacityProperty, null);
+            element.BeginAnimation(TranslateTransform.YProperty, null);
+
+            // Create the storyboard
             var storyboard = new Storyboard();
 
-            var fade = new DoubleAnimation { To = 1, Duration = TimeSpan.FromSeconds(0.25) };
-            fade.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+            // Fade in: from 0 to 1
+            var fade = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromSeconds(0.25),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
             Storyboard.SetTarget(fade, element);
             Storyboard.SetTargetProperty(fade, new PropertyPath(UIElement.OpacityProperty));
 
-            var slide = new DoubleAnimation { To = 0, Duration = TimeSpan.FromSeconds(0.25) };
-            slide.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+            // Slide down: from -10 to 0
+            var slide = new DoubleAnimation
+            {
+                From = -10,
+                To = 0,
+                Duration = TimeSpan.FromSeconds(0.25),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
             Storyboard.SetTarget(slide, element);
             Storyboard.SetTargetProperty(slide, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
 
             storyboard.Children.Add(fade);
             storyboard.Children.Add(slide);
 
-            storyboard.Begin();
+            // Begin the animation
+            storyboard.Begin(element);
         }
 
         // Animation - Hide Element
         private void AnimateHideElement(FrameworkElement element, Action onComplete = null)
         {
             if (element == null) return;
+
+            // Ensure transform exists
             if (!(element.RenderTransform is TranslateTransform))
                 element.RenderTransform = new TranslateTransform();
+            element.RenderTransformOrigin = new Point(0.5, 0.5);
+
+            // Stop any running animations on these properties
+            element.BeginAnimation(UIElement.OpacityProperty, null);
+            element.BeginAnimation(TranslateTransform.YProperty, null);
 
             var storyboard = new Storyboard();
 
-            var fade = new DoubleAnimation { To = 0, Duration = TimeSpan.FromSeconds(0.25) };
-            fade.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+            // Fade out: from 1 to 0
+            var fade = new DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = TimeSpan.FromSeconds(0.25),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
             Storyboard.SetTarget(fade, element);
             Storyboard.SetTargetProperty(fade, new PropertyPath(UIElement.OpacityProperty));
 
-            var slide = new DoubleAnimation { To = -10, Duration = TimeSpan.FromSeconds(0.25) }; // slide up
-            slide.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+            // Slide up: from 0 to -10
+            var slide = new DoubleAnimation
+            {
+                From = 0,
+                To = -10,
+                Duration = TimeSpan.FromSeconds(0.25),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
             Storyboard.SetTarget(slide, element);
             Storyboard.SetTargetProperty(slide, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
 
@@ -145,7 +184,8 @@ namespace GPA_Cal_BetterUI
                 element.Visibility = Visibility.Collapsed;
                 onComplete?.Invoke();
             };
-            storyboard.Begin();
+
+            storyboard.Begin(element);
         }
 
         // Add elective row
@@ -696,22 +736,38 @@ namespace GPA_Cal_BetterUI
                 Semester1Panel.Visibility = Visibility.Collapsed;
                 Semester2Panel.Visibility = Visibility.Collapsed;
                 GeneralPanel.Visibility = Visibility.Visible;
+                AnimateShowElement(GeneralPanel);
             }
             else if (sem == 1)
             {
-                CompulsaryPanel.Visibility = Visibility.Visible;
-                Semester1Panel.Visibility = Visibility.Visible;
+                bool compWasHidden = (CompulsaryPanel.Visibility != Visibility.Visible);
+
                 Semester2Panel.Visibility = Visibility.Collapsed;
                 GeneralPanel.Visibility = Visibility.Collapsed;
+
+                CompulsaryPanel.Visibility = Visibility.Visible;
+                Semester1Panel.Visibility = Visibility.Visible;
+
+                if (compWasHidden) AnimateShowElement(CompulsaryPanel);
+                AnimateShowElement(Semester1Panel);
+
                 AddModuleLabels();
                 AddComboBox_Dep(46, 29);
             }
             else if (sem == 2)
             {
-                CompulsaryPanel.Visibility = Visibility.Visible;
-                Semester1Panel.Visibility = Visibility.Collapsed;
-                Semester2Panel.Visibility = Visibility.Visible;
+                bool compWasHidden = (CompulsaryPanel.Visibility != Visibility.Visible);
+
                 GeneralPanel.Visibility = Visibility.Collapsed;
+                Semester1Panel.Visibility = Visibility.Collapsed;
+
+                CompulsaryPanel.Visibility = Visibility.Visible;
+                Semester2Panel.Visibility = Visibility.Visible;
+
+                if (compWasHidden)
+                    AnimateShowElement(CompulsaryPanel);
+                AnimateShowElement(Semester2Panel);
+
                 AddModuleLabels();
                 AddComboBox_Dep(34, 18);
             }
@@ -890,26 +946,29 @@ namespace GPA_Cal_BetterUI
 
             if (semester == 1)
             {
-                if (department == departments[8])
+                string dept = department_S1;
+
+                if (dept == departments[8]) // Textile
                 {
                     credits = new List<int> { 3, 3, 2, 2, 2, 2, 3 };
                 }
-                else if (department == departments[9])
+                else if (dept == departments[9]) // Transport
                 {
                     credits = new List<int> { 3, 3, 2, 3, 3, 2 };
                 }
-                else if (department == departments[10])
+                else if (dept == departments[10]) // Earth Resource
                 {
                     credits = new List<int> { 3, 3, 2, 2, 2, 2 };
                 }
-                else
+                else // General
                 {
                     credits = new List<int> { 3, 3, 2, 2, 2, 2 };
                 }
             }
             else
             {
-                if (department == departments[0]) 
+                
+                if (department == departments[0])
                 {
                     credits = new List<int> { 3, 3, 3, 3, 3, 2, 2 };
                 }
