@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace GPA_Cal_BetterUI
 {
@@ -29,6 +31,7 @@ namespace GPA_Cal_BetterUI
         string stream = "General";
         int semester = 1;
 
+        private bool _isRemoving = false;
         private List<ComboBox> gradeComboList = new List<ComboBox>();
         private List<string> moduleList = new List<string>();
         private List<(ComboBox electiveCombo, ComboBox gradeCombo)> electivePairs = new List<(ComboBox, ComboBox)>();
@@ -36,9 +39,11 @@ namespace GPA_Cal_BetterUI
         private const int MAX_ELECTIVES = 10;
         private const int MAX_MODULES = 20;
 
+        // Initialization
         public MainWindow()
         {
             InitializeComponent();
+            SemSwitcher(semester);
         }
 
         // Dragging mechanism
@@ -54,6 +59,95 @@ namespace GPA_Cal_BetterUI
             this.Close();
         }
 
+        // Animation - Remove Element
+        private void AnimateRemoveElement(FrameworkElement element, Panel parent, Action onComplete = null)
+        {
+            if (element == null || !parent.Children.Contains(element)) return;
+
+            if (!(element.RenderTransform is TranslateTransform))
+                element.RenderTransform = new TranslateTransform();
+
+            var storyboard = new Storyboard();
+
+            var fade = new DoubleAnimation { To = 0, Duration = TimeSpan.FromSeconds(0.25) };
+            Storyboard.SetTarget(fade, element);
+            Storyboard.SetTargetProperty(fade, new PropertyPath(UIElement.OpacityProperty));
+
+            var slide = new DoubleAnimation { To = 10, Duration = TimeSpan.FromSeconds(0.25) };
+            Storyboard.SetTarget(slide, element);
+            Storyboard.SetTargetProperty(slide, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
+
+            storyboard.Children.Add(fade);
+            storyboard.Children.Add(slide);
+
+            storyboard.Completed += (s, e) =>
+            {
+                parent.Children.Remove(element);
+                onComplete?.Invoke();
+            };
+            storyboard.Begin();
+        }
+
+        // Animation - Show Element
+        private void AnimateShowElement(FrameworkElement element)
+        {
+            if (element == null) return;
+
+            // Ensure it's visible and has a transform
+            element.Visibility = Visibility.Visible;
+            if (!(element.RenderTransform is TranslateTransform))
+                element.RenderTransform = new TranslateTransform();
+            element.Opacity = 0;
+            ((TranslateTransform)element.RenderTransform).Y = -10; // slide from above
+
+            var storyboard = new Storyboard();
+
+            var fade = new DoubleAnimation { To = 1, Duration = TimeSpan.FromSeconds(0.25) };
+            fade.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+            Storyboard.SetTarget(fade, element);
+            Storyboard.SetTargetProperty(fade, new PropertyPath(UIElement.OpacityProperty));
+
+            var slide = new DoubleAnimation { To = 0, Duration = TimeSpan.FromSeconds(0.25) };
+            slide.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+            Storyboard.SetTarget(slide, element);
+            Storyboard.SetTargetProperty(slide, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
+
+            storyboard.Children.Add(fade);
+            storyboard.Children.Add(slide);
+
+            storyboard.Begin();
+        }
+
+        // Animation - Hide Element
+        private void AnimateHideElement(FrameworkElement element, Action onComplete = null)
+        {
+            if (element == null) return;
+            if (!(element.RenderTransform is TranslateTransform))
+                element.RenderTransform = new TranslateTransform();
+
+            var storyboard = new Storyboard();
+
+            var fade = new DoubleAnimation { To = 0, Duration = TimeSpan.FromSeconds(0.25) };
+            fade.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+            Storyboard.SetTarget(fade, element);
+            Storyboard.SetTargetProperty(fade, new PropertyPath(UIElement.OpacityProperty));
+
+            var slide = new DoubleAnimation { To = -10, Duration = TimeSpan.FromSeconds(0.25) }; // slide up
+            slide.EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut };
+            Storyboard.SetTarget(slide, element);
+            Storyboard.SetTargetProperty(slide, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
+
+            storyboard.Children.Add(fade);
+            storyboard.Children.Add(slide);
+
+            storyboard.Completed += (s, e) =>
+            {
+                element.Visibility = Visibility.Collapsed;
+                onComplete?.Invoke();
+            };
+            storyboard.Begin();
+        }
+
         // Add elective row
         private void AddElectiveRow()
         {
@@ -62,6 +156,7 @@ namespace GPA_Cal_BetterUI
                 // Create a horizontal container for the pair
                 StackPanel rowPanel = new StackPanel
                 {
+                    Style = (Style)this.Resources["AnimatedRowStyle"],
                     Orientation = Orientation.Horizontal,
                     Height = 36,
                     Margin = new Thickness(0, 0, 0, 0)
@@ -125,7 +220,29 @@ namespace GPA_Cal_BetterUI
             }
         }
 
-        // Remove last elective row
+        // Remove last elective row 
+        private void RemoveElectiveRow()
+        {
+            // Prevent overlapping removals
+            if (_isRemoving || electivePairs.Count == 0) return;
+            _isRemoving = true;
+
+            // Get the last visual row
+            var lastRow = ElectiveRowsContainer.Children[ElectiveRowsContainer.Children.Count - 1] as FrameworkElement;
+            if (lastRow == null)
+            {
+                _isRemoving = false;
+                return;
+            }
+
+            // Remove the last pair from the list immediately
+            electivePairs.RemoveAt(electivePairs.Count - 1);
+
+            // Animate the visual removal – after animation, clear the flag
+            AnimateRemoveElement(lastRow, ElectiveRowsContainer, () => { _isRemoving = false; });
+        }
+
+        /* Remove last elective row (old - no animations)
         private void RemoveElectiveRow()
         {
             if (electivePairs.Count > 0)
@@ -135,7 +252,7 @@ namespace GPA_Cal_BetterUI
                 ElectiveRowsContainer.Children.Remove(rowToRemove);
                 electivePairs.RemoveAt(electivePairs.Count - 1);
             }
-        }
+        }*/
 
         // Add elective button click
         private void AddElective_Click(object sender, RoutedEventArgs e)
@@ -159,6 +276,7 @@ namespace GPA_Cal_BetterUI
                 // Create a horizontal container for the pair
                 StackPanel rowPanel = new StackPanel
                 {
+                    Style = (Style)this.Resources["AnimatedRowStyle"],
                     Orientation = Orientation.Horizontal,
                     Height = 36,
                     Margin = new Thickness(0, 0, 0, 0)
@@ -197,10 +315,40 @@ namespace GPA_Cal_BetterUI
                 // Add row to container
                 ModuleRowsContainer.Children.Add(rowPanel);
                 modulePairs.Add((creditBox, gradeCombo));
+
+                if (modulePairs.Count == 1) AnimateShowElement(HeaderRow);
             }
         }
 
-        // Remove last elective row
+        private void RemoveModuleRow()
+        {
+            if (_isRemoving || modulePairs.Count == 0) return;
+            _isRemoving = true;
+
+            var lastRow = ModuleRowsContainer.Children[ModuleRowsContainer.Children.Count - 1] as FrameworkElement;
+            if (lastRow == null)
+            {
+                _isRemoving = false;
+                return;
+            }
+
+            modulePairs.RemoveAt(modulePairs.Count - 1);
+
+            if (modulePairs.Count == 0)
+            {
+                // No modules left: animate header out and hide it
+                AnimateHideElement(HeaderRow, () => { _isRemoving = false; });
+                // Also remove the row visually (no callback needed – flag already handled by header)
+                AnimateRemoveElement(lastRow, ModuleRowsContainer);
+            }
+            else
+            {
+                // Still rows left: clear flag after row removal
+                AnimateRemoveElement(lastRow, ModuleRowsContainer, () => { _isRemoving = false; });
+            }
+        }
+
+        /* Remove last elective row
         private void RemoveModuleRow()
         {
             if (modulePairs.Count > 0)
@@ -215,7 +363,7 @@ namespace GPA_Cal_BetterUI
             {
                 HeaderRow.Visibility = Visibility.Collapsed;
             }
-        }
+        }*/
 
         // Add module button click
         private void AddModule_Click(object sender, RoutedEventArgs e)
@@ -742,11 +890,7 @@ namespace GPA_Cal_BetterUI
 
             if (semester == 1)
             {
-                if (department == "General")
-                {
-                    credits = new List<int> { 3, 3, 2, 2, 2, 2 };
-                }
-                else if (department == departments[8])
+                if (department == departments[8])
                 {
                     credits = new List<int> { 3, 3, 2, 2, 2, 2, 3 };
                 }
@@ -755,6 +899,10 @@ namespace GPA_Cal_BetterUI
                     credits = new List<int> { 3, 3, 2, 3, 3, 2 };
                 }
                 else if (department == departments[10])
+                {
+                    credits = new List<int> { 3, 3, 2, 2, 2, 2 };
+                }
+                else
                 {
                     credits = new List<int> { 3, 3, 2, 2, 2, 2 };
                 }
@@ -897,7 +1045,15 @@ namespace GPA_Cal_BetterUI
                 creditList.AddRange(credit_List);
                 gradeList.AddRange(grade_List);
             }
-            else
+            else if (semester == 1)
+            {
+                var grades = GetGrades();
+                var credits = CompulsoryCredit();
+
+                gradeList.AddRange(grades);
+                creditList.AddRange(credits);
+            }
+            else if (semester == 2)
             {
                 var grades = GetGrades();
                 var credits = CompulsoryCredit();
